@@ -19,3 +19,14 @@
         @apply bg-white p-6 rounded shadow-md w-[90%] max-w-md;
     }
 }
+
+@keyframes dropdown {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: sacle(1);
+    }
+}
