@@ -1,4 +1,4 @@
-import Dashboard from "@/components/dashboard/Dashboard"
+import Dashboard from "@/components/dashboard/page"
 
 export default function Home() {
 
@@ -7,8 +7,6 @@ export default function Home() {
       <main>
         <Dashboard />
       </main>
-      <footer>
-      </footer>
     </div>
   );
 }
