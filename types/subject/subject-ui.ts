@@ -1,6 +1,6 @@
-import { ReactNode } from "react"
+import type { ReactNode } from "react"
 
-export interface Subject {
+export interface SubjectUI {
     id: string
     name: string
     description: string

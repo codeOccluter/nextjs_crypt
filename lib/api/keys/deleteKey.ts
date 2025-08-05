@@ -1,4 +1,4 @@
-import axios from "@/lib/axios/instance"
+import axios from "@/lib/axios/axiosClient"
 
 export async function deleteKey(username: string) {
 

@@ -9,9 +9,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="flex flex-col min-h-screen">
+      <body className="grid h-dvh grid-rows-[auto_1fr_auto] m-0 p-0">
         <Header />
-        <main className="flex-1 container mx-auto px-4 py-6">
+        <main className="p-0 m-0">
           {children}
         </main>
         <Footer />
