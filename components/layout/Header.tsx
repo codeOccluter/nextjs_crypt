@@ -19,8 +19,8 @@ export default function Header() {
     ]
 
     return (
-        <header className="header">
-            <h1 className="header-title">NextJS Crypt</h1>
+        <header className="h-16 flex items-center px-48 py-8 bg-black text-white">
+            <h1 className="text-xl font-bold mr-6">NextJS Crypt</h1>
              <nav className="flex space-x-6">
                 {navLinks.map((link) => (
                     <Link

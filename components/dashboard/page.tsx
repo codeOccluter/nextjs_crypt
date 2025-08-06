@@ -5,12 +5,7 @@ import { motion } from "framer-motion"
 export default function Dashboard() {
 
     return (
-        <div className="relative w-full h-screen overflow-hideen">
-            <img 
-                src="/images/CE.jpg"
-                alt="Cryptography Background"
-                className="absolute inset-0 h-full w-full object-cover"
-            />
+        <div>
 
             <div className="absolute w-full h-ull bg-black/50" />
 
@@ -27,7 +22,7 @@ export default function Dashboard() {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.5, duration: 1 }}
                     className="text-lg md:text-2xl text-teal-700 max-w-xl"
-                >최신 암호화 기술과 보안 기법을 학습하는 프로젝트</motion.p>
+                >Dashboard Test</motion.p>
 
                 <motion.a
                     href="/dashboard"
