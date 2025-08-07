@@ -1,8 +1,10 @@
+"use client"
+
 import Dashboard from "@/components/dashboard/page"
 
-export default function DashboardPage() {
+export default function Main() {
 
-    return (
+	return (
         <div>
             <Dashboard />
         </div>
