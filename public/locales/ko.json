@@ -1,0 +1,14 @@
+{
+    "home": {
+        "title": ["Code & Data Forge", "Deep Dev Building", "Modeling & Buliding & Implement"],
+        "subtitle": "데이터 모델링, 코드 작업",
+        "button": {
+            "start": "시작하기",
+            "loading": "이동 중..."
+        },
+        "lang": {
+            "toKo": "KOR",
+            "toEn": "ENG"
+        }
+    }
+}

@@ -8,10 +8,6 @@ const nextConfig = {
     useLightningcss: false,
     serverComponentsExternalPackages: ['next-intl'],
   },
-  i18n: {
-    ...i18n,
-    localeDetection: false
-  },
 };
 
 module.exports = nextConfig

@@ -1,0 +1,14 @@
+{
+    "home": {
+        "title": ["Code & Data Forge", "Deep Dev Building", "Modeling & Buliding & Implement"],
+        "subtitle": "Data Modeling, Code Build",
+        "button": {
+            "start": "Get Started",
+            "loading": "Loading..."
+        },
+        "lang": {
+            "toKo": "KOR",
+            "toEn": "ENG"
+        }
+    }
+}
