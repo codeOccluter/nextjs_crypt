@@ -1,7 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import LoginModal from "./LoginModal"
+import LoginModal from "@/components/mainpage/auth/LoginModal"
+import LoginForm from "./Form/LoginForm"
+import RegisterForm from "./Form/RegisterForm"
+import GuestPanel from "./Form/GuestPanel"
 
 type Props = {
     open: boolean
@@ -34,7 +37,6 @@ export default function AuthModal({ open, onClose, onLogin, onRegister, onGuest 
 
     return (
         <LoginModal open={open} onClose={onClose} title="접속하기">
-            {/* TODO: Tabs */}
             <div className="mb-4 grid grid-cols-3 rounded-lg border border-white/10 bg-white/5 p-1 text-sm">
                 {tabs.map((_tab) => (
                     <button
@@ -47,7 +49,7 @@ export default function AuthModal({ open, onClose, onLogin, onRegister, onGuest 
 
             {tab === "login" && <LoginForm onSubmit={(v) => onLogin?.(v)} />}
             {tab === "register" && <RegisterForm onSubmit={(v) => onRegister?.(v)} />}
-            {tab === "login" && <GuestPanel onEnter={() => onGuest?.()} />}
+            {tab === "guest" && <GuestPanel onEnter={() => onGuest?.()} />}
         </LoginModal>
     )
 }
