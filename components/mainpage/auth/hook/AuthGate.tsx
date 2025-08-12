@@ -44,25 +44,24 @@ export default function AuthGate({
     }
 
     const onGuest = async () => {
-        // TODO: useEnterAsGuest().mutate()
-        // 임시로 guest_id 쿠키만 심어서 흐름 확인
-        // 실제로는 ClientDB에 guest_user insert + 쿠키 발급
-        await enter()
+        // 서버가 guest_id HttpOnly 쿠키 발급 + client_db에 저장
+        // 세션 재평가 → 200
+        console.log("[onGuest] clicked 로그")
+        await enter() 
+        console.log("[onGuest] enter() 로그")
         await refresh()
-
-        // document.cookie = `guest_id=${crypto.randomUUID()}; max-age=${24 * 60 * 60}; path=/;`
+        console.log("[onGuest] refresh() 로그")
     }
 
     if(status === "loading") return null
-
     if(open) {
         return (
             <AuthModal 
                 open={open}
                 onClose={() => { /* 강제: 닫기 불가. 필요하면 게스트 허용 시 닫기 허용 */ }}
-                onLogin={onLogin}
-                onRegister={onRegister}
-                onGuest={onGuest}
+                onLogin={onLogin} // 미구현
+                onRegister={onRegister} // 미구현
+                onGuest={onGuest} // 현재 구현 완료
             />
         )
     }

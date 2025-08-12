@@ -1,7 +1,7 @@
-"use Client"
+"use client"
 
 import { useState } from "react"
-import { cleanupExpiredGuest, issueGuest } from "../guest.service"
+import axiosClient from "@/lib/axios/axiosClient"
 
 export default function useEnterAsGuest() {
 
@@ -9,25 +9,35 @@ export default function useEnterAsGuest() {
     const [error, setError] = useState<string | null>(null)
 
     const enter = async () => {
+        
+        console.log(`baseURL`, (axiosClient as any).defaults.baseURL)
         setPending(true)
         setError(null)
 
         try{
-            await cleanupExpiredGuest()
-            const id = await issueGuest() // 발급
-
-            return id
-        }catch(error: any) {
-            setError(error?.message || "Guest enter failded")
-            throw error
+            await axiosClient.post(`/api/auth/guest`) // httpOnly guest_id 쿠키 세팅
+        }catch(err: any) {
+            setError(err?.message || "Guest enter failed")
+            throw err
         }finally {
             setPending(false)
         }
     }
 
-    return {
-        enter,
-        pending,
-        error
+    const leave = async () => {
+        
+        setPending(true)
+        setError(null)
+
+        try{
+            await axiosClient.delete(`/api/auth/guest`) // 쿠키 제거
+        }catch(err: any) {
+            setError(err?.message || "Guest leave failed")
+            throw err
+        }finally {
+            setPending(false)
+        }
     }
+
+    return { enter, leave, pending, error }
 }

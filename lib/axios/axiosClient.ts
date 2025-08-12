@@ -15,7 +15,7 @@ export type ApiError = {
 
 const axiosClient = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "/",
-    timeout: 15_000,
+    timeout: 15000,
     withCredentials: true // 쿠키 기반 세션 필수
 })
 
