@@ -1,5 +1,6 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
+import { User } from "@/types/entities/User"
 
 declare global {
     var _serverDB: DataSource | undefined
@@ -13,8 +14,9 @@ export const ServerDB = global._serverDB ?? new DataSource({
     password: process.env.SERVER_DB_PASSWORD,
     database: process.env.SERVER_DB_NAME,
     synchronize: true,
+    // synchronize: true는 개발 단계에서만, 실무 배포 시에는 "migration" 사용
     logging: true,
-    entities: [],
+    entities: [User],
 })
 
 if(!global._serverDB) {

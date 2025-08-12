@@ -1,12 +1,12 @@
 "use client"
 
-import Dashboard from "@/components/dashboard/page"
+import MainComponent from "@/components/mainpage/page"
 
 export default function Main() {
 
 	return (
         <div>
-            <Dashboard />
+            <MainComponent />
         </div>
     )
 }

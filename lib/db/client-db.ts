@@ -1,12 +1,12 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
-import { Subject } from "@/types/entities/Subject"
+import { GuestUser } from "@/types/entities/GuestUser"
 
 declare global {
-    var _clientDB: DataSource | undefined
+    var _clientSQL: DataSource | undefined
 }
 
-export const ClientDB = global._clientDB ?? new DataSource({
+export const ClientSQL = global._clientSQL ?? new DataSource({
     type: "mysql",
     host: process.env.CLIENT_DB_HOST,
     port: Number(process.env.CLIENT_DB_PORT),
@@ -15,9 +15,9 @@ export const ClientDB = global._clientDB ?? new DataSource({
     database: process.env.CLIENT_DB_NAME,
     synchronize: true,
     logging: false,
-    entities: [Subject],
+    entities: [GuestUser],
 })
 
-if(!global._clientDB) {
-    global._clientDB = ClientDB
+if(!global._clientSQL) {
+    global._clientSQL = ClientSQL
 }
