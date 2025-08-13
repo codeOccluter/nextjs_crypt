@@ -1,10 +1,13 @@
 "use client"
 
-import { LogOut } from "lucide-react"
+import { LogOut, Loader2 } from "lucide-react"
+import FullscreenLoader from "@/components/common/FullscreenLoader"
 import useAuthStatus from "./hook/useAuthStatus"
 import useEnterAsGuest from "./hook/useEnterAsGuest"
 import { useRouter, usePathname } from "next/navigation"
 import { useState } from "react"
+import ConfirmModal from "@/components/common/ConfirmModal"
+import axiosClient from "@/lib/axios/axiosClient"
 
 export default function GuestLogoutButton({
     redirectToLanding = false
@@ -12,15 +15,87 @@ export default function GuestLogoutButton({
 
     const { status, refresh } = useAuthStatus()
     const { leave, pending } = useEnterAsGuest()
+
     const router = useRouter()
     const pathname = usePathname()
-    const [hover, setHover] = useState(false)
+    
+    const [confirmOpen, setConfirmOpen] = useState(false)
+    const [processing, setProcessing] = useState(false)
 
-    // TODO 버튼 정의 및 CSS 작업
+    if(status !== "guest") return null
+
+    const extractLocale = () => 
+        pathname?.match(/^\/(ko|en)(\/|$)/)?.[1] ?? "ko"
+
+    const startLogout = () => {
+        setConfirmOpen(true)
+    }
+
+    const handleCancel = () => {
+        if(processing) return
+        setConfirmOpen(false)
+    }
+
+    const handleConfirm = async () => {
+        setProcessing(true)
+
+        try{
+            await axiosClient.delete(`/api/auth/guest`, {
+                withCredentials: true
+            })
+            
+            if(redirectToLanding) {
+                const locale = extractLocale()
+                router.replace(`/${locale}`)
+            }
+            router.refresh()
+            await refresh()
+        }catch(err) {
+            console.error(`[Guest logout] failed ${err}`)
+        }finally {
+            setProcessing(false)
+            setConfirmOpen(false)
+        }
+    }
 
     return (
-        <div>
-            
-        </div>
+        <>
+            <FullscreenLoader 
+                open={processing}
+                text="로그아웃 중..."
+            />
+            <button
+                onClick={startLogout}
+                className="group inline-flex items-center gap-2
+                            h-8 px-3 rounded-md border border-zinc-200/70
+                            bg-white/95 text-zinc-900
+                            text-[15px] leading-8 font-semibold tracking-tight
+                            shadow-lg transition-all
+                            hover:border-rose-400 hover:shadow-rose-300 hover:-translate-y-[0.5px]
+                            active:translate-y-0"
+                aria-label="Guest Logout"
+            >
+                <LogOut size={16} className="text-zinc-700 translate-y-[0.5px]" />
+                <span className="leading-8">로그아웃</span>
+            </button>
+
+            <ConfirmModal
+                open={confirmOpen}
+                title="게스트 로그아웃"
+                description={
+                    processing ? (
+                        <span className="inline-flex items-center gap-2">                
+                            <span>로그아웃 중... 잠시만 기다려주세요.</span>
+                        </span>
+                    ) :
+                    "게스트 로그아웃을 하시겠습니까?"
+                }
+                confirmText={processing ? "처리 중..." : "예"}
+                cancelText={processing ? "취소 불가" : "아니오"}
+                confirmDisabled={processing}
+                onCancel={handleCancel}
+                onConfirm={handleConfirm}
+            />
+        </>
     )
 }

@@ -1,21 +1,25 @@
 // app/api/auth/guest/route.ts
 import { cookies } from "next/headers"
-import { NextRequest } from "next/server"
-import { ClientSQL } from "@/lib/db/client-db"
-import { GuestUser } from "@/types/entities/GuestUser"
+import { NextRequest, NextResponse } from "next/server"
+import { ClientSQL, ensureClientDBReady } from "@/lib/db/client-db"
+import { Entities } from "@/lib/orm/entities"
 
-export const dynamic = "force-dynamic"
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 const MAX_AGE_MS = 24 * 60 * 60 * 1000 // 24시간
 
-async function ensureClientDB() {
-    if(!ClientSQL.isInitialized) await ClientSQL.initialize()
-}
+// async function ensureClientDB() {
+//     console.log("isInitialized:", ClientSQL.isInitialized)
+//     if(!ClientSQL.isInitialized) await ClientSQL.initialize()
+
+//     console.log("hasMetadata(GuestUser): ", ClientSQL.hasMetadata(Entities.GuestUser))
+// }
 
 export async function POST(_req: NextRequest) {
-    await ensureClientDB()
+    await ensureClientDBReady()
+    const repo = ClientSQL.getRepository(Entities.GuestUser)
 
-    const repo = ClientSQL.getRepository(GuestUser)
     const now = new Date()
     const expires = new Date(now.getTime() + MAX_AGE_MS)
 
@@ -44,18 +48,37 @@ export async function POST(_req: NextRequest) {
 }
 
 export async function DELETE() {
-    await ensureClientDB()
+    await ensureClientDBReady()
     // 만료된 게스트 일괄 삭제
     
-    const repo = ClientSQL.getRepository(GuestUser)
+    const cookieStore = cookies()
+    const token = cookieStore.get("guest_id")?.value
+    if(token) {
+        try {
+            const repo = ClientSQL.getRepository(Entities.GuestUser)
+            await repo
+                .createQueryBuilder()
+                .delete()
+                .from(Entities.GuestUser)
+                .where("id = :id", { id: token, token })
+                .execute()
+        }catch{
 
-    const c = cookies()
-    const guestId = c.get("guest_id")?.value
-    if(guestId) {
-        const row = await repo.findOne({ where: { id: guestId } })
-        if(row) await repo.remove(row)
+        }
     }
-    c.set("guest_id", "", { path: "/", httpOnly: true, maxAge: 0 })
 
-    return new Response(null, { status: 204 })
+    cookieStore.delete("guest_id")
+    const res = new NextResponse(null, { status: 204 })
+
+    res.cookies.set({
+        name: "guest_id",
+        value: "",
+        maxAge: 0,
+        path: "/",
+        httpOnly: true,
+        sameSite: "lax",
+        secure: true
+    })
+
+    return res
 }

@@ -32,7 +32,7 @@ export default function RegisterForm({
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-3">
+        <form onSubmit={handleSubmit} className="space-y-5">
             <Input 
                 label="이름"
                 value={form.name}
@@ -70,7 +70,7 @@ export default function RegisterForm({
             />
             <button
                 type="submit"
-                className=" mt-2 inline-flex h-10 w-full 
+                className=" mt-2 inline-flex h-10 w-full
                             items-center justify-center rounded-lg 
                             bg-emerald-500 px-4 font-semibold text-white shadow-lg 
                             hover:bg-emerald-600 active:scale-95 transition"
