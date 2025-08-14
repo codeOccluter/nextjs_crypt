@@ -3,50 +3,23 @@ import { cookies } from "next/headers"
 import { NextRequest, NextResponse } from "next/server"
 import { ClientSQL, ensureClientDBReady } from "@/lib/db/client-db"
 import { Entities } from "@/lib/orm/entities"
+import { createGuest } from "@/lib/auth/guest/createGuest"
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const MAX_AGE_MS = 24 * 60 * 60 * 1000 // 24시간
-
-// async function ensureClientDB() {
-//     console.log("isInitialized:", ClientSQL.isInitialized)
-//     if(!ClientSQL.isInitialized) await ClientSQL.initialize()
-
-//     console.log("hasMetadata(GuestUser): ", ClientSQL.hasMetadata(Entities.GuestUser))
-// }
-
+// Guest 로그인 시 ID 생성 및 저장
 export async function POST(_req: NextRequest) {
-    await ensureClientDBReady()
-    const repo = ClientSQL.getRepository(Entities.GuestUser)
 
-    const now = new Date()
-    const expires = new Date(now.getTime() + MAX_AGE_MS)
+    const body = await _req.json().catch(() => ({}))
+    const { nickname, ttlMs } = body ?? {}
 
-    const created = repo.create({ role: 0, expires_at: expires })
-    const saved = await repo.save(created)
+    const guest = await createGuest({ nickname, ttlMs })
 
-    cookies().set({
-        name: "guest_id",
-        value: saved.id,
-        httpOnly: true,
-        sameSite: "lax",
-        secure: process.env.NODE_ENV === "production",
-        path: "/",
-        maxAge: MAX_AGE_MS / 1000,
-    })
-
-    return Response.json(
-        {
-            id: saved.id,
-            expires_at: expires,
-        },
-        {
-            status: 201        
-        }
-    )
+    return Response.json(guest, { status: 201 })
 }
 
+// Guest 로그아웃 시 ID 삭제
 export async function DELETE() {
     await ensureClientDBReady()
     // 만료된 게스트 일괄 삭제

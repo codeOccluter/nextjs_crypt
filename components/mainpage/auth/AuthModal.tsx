@@ -60,7 +60,7 @@ export default function AuthModal({ open, onLogin, onRegister, onGuest }: Props)
     return (
         <LoginModal 
             open={open} 
-            title="접속하기"
+            title="이메일로 시작하기"
             primaryLabel={primaryLabel}
             onPrimary={handlePrimary}
             primaryDisabled={primaryDisabled}
@@ -91,8 +91,7 @@ export default function AuthModal({ open, onLogin, onRegister, onGuest }: Props)
             {tab === "guest" && (
                 <GuestPanel 
                     onEnter={async () => { await onGuest?.() }}
-                    // 게스트 로그인 - 수정 해야 함
-                    // onValidChange={setValidGuest} - 구현 예정
+                    onValidChange={setValidGuest}
                 />
             )}
         </LoginModal>

@@ -13,7 +13,7 @@ export const ClientSQL = global._clientSQL ?? new DataSource({
     username: process.env.CLIENT_DB_USER,
     password: process.env.CLIENT_DB_PASSWORD,
     database: process.env.CLIENT_DB_NAME,
-    synchronize: true,
+    synchronize: false,
     logging: true,
     entities: EntityList
 })

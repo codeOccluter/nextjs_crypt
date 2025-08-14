@@ -20,8 +20,8 @@ type LoginModalProps = {
 
 export default function LoginModal({ 
     open, 
-    title = "접속하기",
-    primaryLabel = "확인",
+    title,
+    primaryLabel,
     onPrimary,
     primaryDisabled,
     pending,

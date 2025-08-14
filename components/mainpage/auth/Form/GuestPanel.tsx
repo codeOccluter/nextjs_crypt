@@ -1,20 +1,84 @@
 "use client"
 
+import { useEffect, useState, useMemo } from "react"
+
+type GuestPanelProps = {
+    // 상위 컴포넌트 (AuthModal)에서 게스트 입장 로직 설계
+    onEnter: () => void | Promise<void>
+    onValidChange?: (valid: boolean) => void
+}
+
 export default function GuestPanel({
-    onEnter
-}: { onEnter: () => void }) {
+    onEnter,
+    onValidChange
+}: GuestPanelProps) {
+
+    // TODO:
+    // 약관 동의 (검증 단계 구현)
+    const [agree, setAgree] = useState(false)
+    // TODO: 닉네임 설정기능
+    const [nickname, setNickname] = useState("")
+
+    const valid = useMemo(() => {
+        
+        const nicknameOK = nickname.trim().length === 0 || (nickname.trim().length >=2 && nickname.trim().length <= 8)
+        return agree && nicknameOK
+    }, [agree, nickname])
+
+    useEffect(() => {
+        onValidChange?.(valid)
+    }, [valid, onValidChange])
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+
+        if(!valid) return
+        await onEnter()
+    }
 
     return (
-        <div className="space-y-4">
-            <p className="text-white/80 text-sm">
-                게스트로 입장하면 일부 기능이 제한됩니다. 임시 아이디가 발급되고 24시간 후 자동 삭제됩니다.
-            </p>
-            <button
-                onClick={onEnter}
-                className=" inline-flex h-10 w-full items-center justify-center
-                            roundeld-lg bg-indigo-500 px-4 font-semibold text-white
-                            shadow-lg hover:bg-indigo-600 active:scale-95 transition" 
-            >게스트로 입장</button>
-        </div>
+        <form 
+            id="guest-form"
+            onSubmit={handleSubmit}
+            className="space-y-4"
+        >
+            <div className="rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/85">
+                게스트 모드는 체험용으로 제공됩니다. 일부 기능(프로필, 데이터 저장 등)이 제한될 수 있습니다.
+            </div>
+
+            <div className="space-y-1.5">
+                <label
+                    htmlFor="guest-nickname"
+                    className="text-sm text-white/85"
+                >닉네임 <span className="text-white/40">(선택)</span></label>
+                <input
+                    id="guest-nickname"
+                    type="text"
+                    value={nickname}
+                    onChange={(e) => setNickname(e.target.value)}
+                    placeholder="2~8자 (미입력 시 임시닉네임)"
+                    className="w-full rounded-lg border border-white/10 bg-black/20 px-3 py-2
+                               text-white placeholder:text-white/40 outline-none
+                               focus:border-sky-400/60 focus:ring-0"
+                />
+                {nickname.trim().length > 0 && (nickname.trim().length < 2 || nickname.trim().length > 8) && (
+                    <p className="text-xs text-rose-400">닉네임은 2~8자 범위로 입력해 주세요</p>
+                )}
+            </div>
+
+            <label className="flex items-start gap-3 rounded-lg border border-white/10 bg-white/5 px-4 py-3">
+                <input 
+                    type="checkbox"
+                    checked={agree}
+                    onChange={(e) => setAgree(e.target.checked)}
+                    className="mt-1 h-4 w-4 accent-sky-500"
+                />
+                <span className="text-sm text-white/85">
+                    게스트 이용에 관한 안내를 확인했고 동의합니다.
+                    <br />
+                    <span className="text-white/50 text-xs">세션 만료시 데이터가 삭제될 수 있습니다.</span>
+                </span>
+            </label>
+        </form>
     )
 }
