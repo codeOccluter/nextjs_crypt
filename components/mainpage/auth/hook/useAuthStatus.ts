@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from "react"
 import axiosClient from "@/lib/axios/axiosClient"
-import { readGuestIdFromCookie, isGuestValid } from "../guest.service"
 
 type Status = "authenticated" | "guest" | "unauthenticated" | "loading"
 export type SessionUser = {

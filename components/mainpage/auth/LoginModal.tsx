@@ -1,99 +1,104 @@
 "use client"
 
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
-import { AnimatePresence, motion } from "framer-motion"
+import { Loader2 } from "lucide-react"
 
-type Props = {
+type LoginModalProps = {
     open: boolean
-    onClose: () => void
     title?: string
+    primaryLabel?: string
+    onPrimary?: () => void | Promise<void>
+    primaryDisabled?: boolean
+    pending?: boolean
+    onSubmit?: () => Promise<void> | void
+    buttonLabel?: string
+    backgroundImageUrl?: string
+    gradientClassName?: string
     children: React.ReactNode
 }
 
 export default function LoginModal({ 
     open, 
-    onClose, 
-    title, 
-    children 
-}: Props) {
-
-    const ref = useRef<HTMLDivElement | null>(null)
+    title,
+    primaryLabel,
+    onPrimary,
+    primaryDisabled,
+    pending,
+    onSubmit,
+    buttonLabel = "로그인",
+    backgroundImageUrl = "",
+    gradientClassName = "from-sky-500/40 via-fuchsia-500/30 to-rose-500/40",
+    children
+}: LoginModalProps) {
 
     useEffect(() => {
+        if(!open) return
+        document.documentElement.style.overflow = "hidden"
 
-        const onKey = (e: KeyboardEvent) => {
-            if(e.key === "Escape") onClose()
-        }
-        document.addEventListener("keydown", onKey)
-        if(open) {
-            
-            const { overflow } = document.body.style
-            document.body.style.overflow = "hidden"
+    }, [open])
 
-            return () => {
-                document.body.style.overflow = overflow
-                document.removeEventListener("keydown", onKey)
-            }
-        }
-        
-        return () => document.removeEventListener("keydown", onKey)
-    }, [open, onClose])
+    if(!open) return null
 
-    if(typeof document === "undefined") return null
-    if(!ref.current) {
-
-        const div = document.createElement("div")
-        div.setAttribute("id", "modal-root")
-        document.body.appendChild(div)
-        ref.current = div
+    const handlePrimary = async () => {
+        if(!onPrimary || pending) return
+        await onPrimary()
     }
 
     return createPortal(
-        <AnimatePresence>
-            {open && (
-                <motion.div
-                    className="fixed inset-0 z-[1000] flex items-center justify-center p-4"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    aria-model
-                    role="dialog"
-                    aria-labelledby={title ? "modal-title": undefined}
-                    onMouseDown={(e) => {
-                        if(e.target === e.currentTarget) onClose
-                    }}
-                >
-                    {/* TODO: 배경 */}
-                    <motion.div 
-                        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                    />
-                    {/* TODO: 카드 */}
-                    <motion.div
-                        className="relative w-full max-w-md rounded-2xl border border-white/10 bg-zinc-900/95 text-white shadow-2xl"
-                        initial={{ y: 20, scale: 0.98, opacity: 0 }}
-                        animate={{ y: 0, scale: 1, opacity: 1 }}
-                        exit={{ y: 10, scale: 0.98, opacity: 0 }}
-                        transition={{ type: "spring", stiffness: 220, damping: 22 }}
+        <div 
+            className="fixed inset-0 z-[1000] flex items-center justify-center"
+            aria-modal="true"
+            role="dialog"
+        >
+            <div
+                className="pointer-events-none abolute inset-0 -z-10 bg-cover bg-center"
+                style={
+                    backgroundImageUrl ? {
+                        backgroundImage: `url(${backgroundImageUrl})`
+                    } : undefined
+                }
+            />
+            <div className={`pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br ${gradientClassName}`} />
+            <div className="pointer-events-none absolute inset-0 -z-10 bg-black/30 backdrop-blur-[3px]" />
+            <div className="pointer-events-none absolute inset-0 -z-10 [background:radial-gradient(ellipse_at_center,transparent_0%,transparent_45%,rgba(0,0,0,0.35)_100%)]" />
+            <button 
+                className="absolute inset-0"
+                aria-label="close overlay"
+            />
+
+            <div
+                className="relative mx-4 w-[800px] max-w-[96vw]
+                           rounded-2xl border border-white/15
+                           bg-zinc-900/80 backdrop-blur-md shadow-2xl
+                           ring-1 ring-black/20
+                           flex flex-col max-h-[88vh]"
+                onClick={(e) => e.stopPropagation()}
+            >
+                <div className="flex items-center justify-between px-8 pt-8 pb-4">
+                    <h2 className="text-lg font-semibold text-white">{title}</h2>
+                </div>
+                <div className="px-8 pb-4 overflow-auto flex-1">{children}</div>
+                <div className="px-8 pb-8 pt-8">
+                    <button
+                        type="submit"
+                        onClick={handlePrimary}
+                        disabled={!!primaryDisabled || !!pending}
+                        className={`inline-flex h-11 w-full items-center justify-center
+                                    rounded-lg bg-sky-500 text-white text-[15px] font-semibold
+                                    transition
+                                     ${primaryDisabled || pending
+                                            ? "bg-sky-500/60 text-white/85 cursor-not-allowed"
+                                            : "bg-sky-500 text-white hover:bg-sky-600 active:bg-sky-700"}
+                                `}
                     >
-                    {title && (
-                        <div className="flex items-center justify-between px-5 pt-4 pb-3">
-                            <h2 id="modal-title" className="text-lg font-semibold">{title}</h2>
-                            <button
-                                onClick={onClose}
-                                className="rounded-md p-1.5 text-white/70 hover:bg-white/10 hover:text-white translation"
-                                aria-label="Close"
-                            >X</button>
-                        </div>
-                    )}
-                    <div className="px-5 pb-5">{children}</div>
-                    </motion.div>
-                </motion.div>
-            )}
-        </AnimatePresence>,
-        ref.current
+                        {pending && <Loader2 size={16} className="mr-2 animate-spin" />}
+                        {pending ? "처리 중..." : primaryLabel}
+                    </button>
+                </div>
+                <div className="pointer-events-none absolute -inset-x-6 bottom-2 -z-10 h-10 rounded-[28px] bg-black/40 blur-xl" />
+            </div>
+        </div>,
+        document.body
     )
 }

@@ -1,6 +1,6 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
-import { GuestUser } from "@/types/entities/GuestUser"
+import { Entities, EntityList } from "@/lib/orm/entities"
 
 declare global {
     var _clientSQL: DataSource | undefined
@@ -13,11 +13,24 @@ export const ClientSQL = global._clientSQL ?? new DataSource({
     username: process.env.CLIENT_DB_USER,
     password: process.env.CLIENT_DB_PASSWORD,
     database: process.env.CLIENT_DB_NAME,
-    synchronize: true,
-    logging: false,
-    entities: [GuestUser],
+    synchronize: false,
+    logging: true,
+    entities: EntityList
 })
 
 if(!global._clientSQL) {
     global._clientSQL = ClientSQL
 }
+
+export async function ensureClientDBReady() {
+
+    if(!ClientSQL.isInitialized) await ClientSQL.initialize()
+
+    if(!ClientSQL.hasMetadata(Entities.GuestUser)) {
+        await ClientSQL.destroy();
+        (ClientSQL.options as any).entities = EntityList
+        await ClientSQL.initialize()
+    }
+}
+
+export { Entities }

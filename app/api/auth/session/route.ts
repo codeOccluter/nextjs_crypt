@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server"
 import { cookies } from "next/headers"
 
+export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 
 // 세션 조회

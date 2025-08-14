@@ -1,24 +1,40 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useMemo } from "react"
 import Input from "@/components/common/Input"
 
+type LoginFormProps = {
+    onSubmit: (v: {
+        email:string 
+        password: string 
+    }) => void | Promise<void>
+    onValidChange?: (valid: boolean) => void
+}
+
 export default function LoginForm({ 
-    onSubmit 
-}: { onSubmit: (v: { email: string, password: string }) => void }) {
+    onSubmit,
+    onValidChange
+}: LoginFormProps) {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const handleSubmit = (e: any) => {
+    const valid = useMemo(() => email.trim() !== "" && password.trim() !== "", [email, password])
+
+    useEffect(() => {
+        onValidChange?.(valid)
+    }, [valid, onValidChange])
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-    
+        if(!valid) return
         onSubmit({ email, password })
     }
 
     return (
         <form
-            onSubmit={(e) => handleSubmit}
+            id="login-form"
+            onSubmit={handleSubmit}
             className="space-y-4"
         >
             <Input 
@@ -35,13 +51,6 @@ export default function LoginForm({
                 onChange={setPassword}
                 placeholder="***********"
             />
-            <button
-                type="submit"
-                className=" mt-2 inline-flex h-10 w-full
-                            justify-center rounded-lg bg-sky-500
-                            px-4 font-semibold text-white shadow-lg
-                            hover:bg-sky-600 active:scale-95 transition"
-            >로그인</button>
         </form>
     )
 }

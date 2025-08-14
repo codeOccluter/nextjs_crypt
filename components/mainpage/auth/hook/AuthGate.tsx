@@ -40,17 +40,14 @@ export default function AuthGate({
         primaryLang?: string
     }) => {
         // TODO: 회원가입 → 성공 시 자동 로그인 or 로그인 탭으로 전환
-        console.log("register", v)
+        // console.log("register", v)
     }
 
     const onGuest = async () => {
         // 서버가 guest_id HttpOnly 쿠키 발급 + client_db에 저장
         // 세션 재평가 → 200
-        console.log("[onGuest] clicked 로그")
         await enter() 
-        console.log("[onGuest] enter() 로그")
         await refresh()
-        console.log("[onGuest] refresh() 로그")
     }
 
     if(status === "loading") return null
@@ -58,7 +55,6 @@ export default function AuthGate({
         return (
             <AuthModal 
                 open={open}
-                onClose={() => { /* 강제: 닫기 불가. 필요하면 게스트 허용 시 닫기 허용 */ }}
                 onLogin={onLogin} // 미구현
                 onRegister={onRegister} // 미구현
                 onGuest={onGuest} // 현재 구현 완료

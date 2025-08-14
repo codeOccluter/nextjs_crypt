@@ -3,6 +3,7 @@
 import "@/styles/components/layout/header.css"
 import Link from "next/link"
 import Dropdown from "../common/Dropdown"
+import GuestLogoutButton from "../mainpage/auth/GuestLogoutButton"
 
 export default function Header() {
 
@@ -19,21 +20,29 @@ export default function Header() {
     ]
 
     return (
-        <header className="h-16 flex items-center px-48 py-8 bg-black text-white">
-            <h1 className="text-xl font-bold mr-6">NextJS Crypt</h1>
-             <nav className="flex space-x-6">
-                {navLinks.map((link) => (
-                    <Link
-                        key={link.href}
-                        href={link.href}
-                        className="nav-link"
-                    >{link.label}</Link>
-                ))}
-                <Dropdown 
-                    label="Algorithm"
-                    items={algoLinks}
+        <header className="h-16 flex items-center px-60 bg-black text-white">
+            <div className="flex items-center space-x-6">
+                <h1 className="text-2xl font-bold mr-6">ABOUT SQL</h1>
+                <nav className="flex items-center space-x-6">
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.href}
+                            href={link.href}
+                            className="nav-link"
+                        >{link.label}</Link>
+                    ))}
+                    <Dropdown 
+                        label="Algorithm"
+                        items={algoLinks}
+                    />
+                </nav>
+            </div>
+
+             <div className="ml-auto flex items-center">
+                <GuestLogoutButton 
+                    redirectToLanding
                 />
-             </nav>
+            </div>
         </header>
     )
 }

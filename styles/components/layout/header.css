@@ -1,0 +1,13 @@
+.nav-link {
+    @apply
+    inline-flex items-center
+    h-8 px-1
+    text-[15px] leading-8 font-medium tracking-tight
+    text-zinc-100/90 hover:text-white
+    transition-colors;
+}
+
+.nav-link:focus-visible {
+    @apply
+    outline-none ring-2 ring-offset-2 ring-offset-black ring-rose-400 rounded-md;
+}
