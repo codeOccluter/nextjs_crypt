@@ -43,10 +43,10 @@ export default function AuthGate({
         // console.log("register", v)
     }
 
-    const onGuest = async () => {
+    const onGuest = async (opts?: { nickname?: string, ttlMs?: number }) => {
         // 서버가 guest_id HttpOnly 쿠키 발급 + client_db에 저장
         // 세션 재평가 → 200
-        await enter() 
+        await enter(opts) 
         await refresh()
     }
 

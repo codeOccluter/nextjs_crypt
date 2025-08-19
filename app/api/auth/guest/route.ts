@@ -12,6 +12,7 @@ export const dynamic = "force-dynamic";
 export async function POST(_req: NextRequest) {
 
     const body = await _req.json().catch(() => ({}))
+    console.log(body)
     const { nickname, ttlMs } = body ?? {}
 
     const guest = await createGuest({ nickname, ttlMs })

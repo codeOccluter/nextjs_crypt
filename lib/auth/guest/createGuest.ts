@@ -16,7 +16,7 @@ export async function createGuest({
     const guestRepo = ClientSQL.getRepository(Entities.GuestUser)
 
     const tempNickname = nickname ?? `${Date.now()}_${Math.random().toString(36).slice(2)}`
-
+    console.log(`=======Nickname: ${nickname}============`)
     let guest = guestRepo.create({
         nickname: tempNickname,
         role: 0,
