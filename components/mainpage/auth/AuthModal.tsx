@@ -2,9 +2,9 @@
 
 import { useState } from "react"
 import LoginModal from "@/components/mainpage/auth/LoginModal"
-import LoginForm from "./Form/LoginForm"
-import RegisterForm from "./Form/RegisterForm"
-import GuestPanel from "./Form/GuestPanel"
+import LoginForm from "./EnterForm/LoginForm"
+import RegisterForm from "./EnterForm/RegisterForm"
+import GuestPanel from "./EnterForm/GuestPanel"
 
 type Props = {
     open: boolean
@@ -20,7 +20,10 @@ type Props = {
         password: string
         primaryLang?: string
     }) => Promise<void> | void
-     onGuest?: () => Promise<void> | void
+     onGuest?: (opts?: { 
+        nickname?: string
+        ttlMs?: number
+      }) => Promise<void> | void
 }
 
 const tabs = [
@@ -47,14 +50,9 @@ export default function AuthModal({ open, onLogin, onRegister, onGuest }: Props)
         (tab == "guest" && !validGuest)
 
     const handlePrimary = async () => {
-        setPending(true)
 
-        try{
-            const formId = tab === "login" ? "login-form" : tab === "register" ? "register-form" : "guest-form";
-            (document.getElementById(formId) as HTMLFormElement | null)?.requestSubmit()
-        }finally{
-            setPending(false)
-        }
+        const formId = tab === "login" ? "login-form" : tab === "register" ? "register-form" : "guest-form";
+        (document.getElementById(formId) as HTMLFormElement | null)?.requestSubmit()
     }
 
     return (
@@ -90,7 +88,7 @@ export default function AuthModal({ open, onLogin, onRegister, onGuest }: Props)
             )}
             {tab === "guest" && (
                 <GuestPanel 
-                    onEnter={async () => { await onGuest?.() }}
+                    onEnter={async (opts) => { await onGuest?.(opts) }}
                     onValidChange={setValidGuest}
                 />
             )}

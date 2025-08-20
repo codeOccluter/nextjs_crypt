@@ -3,19 +3,27 @@
 import { useState } from "react"
 import axiosClient from "@/lib/axios/axiosClient"
 
+type EnterOptions = {
+    nickname?: string
+    ttlMs?: number
+}
+
 export default function useEnterAsGuest() {
 
     const [pending, setPending] = useState(false)
     const [error, setError] = useState<string | null>(null)
 
-    const enter = async () => {
+    const enter = async (opts?: EnterOptions) => {
         
         console.log(`baseURL`, (axiosClient as any).defaults.baseURL)
         setPending(true)
         setError(null)
 
         try{
-            await axiosClient.post(`/api/auth/guest`) // httpOnly guest_id 쿠키 세팅
+            await axiosClient.post(`/api/auth/guest`, {
+                nickname: opts?.nickname,
+                ttlMs: opts?.ttlMs
+            }) // httpOnly guest_id 쿠키 세팅
         }catch(err: any) {
             setError(err?.message || "Guest enter failed")
             throw err

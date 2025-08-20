@@ -4,7 +4,10 @@ import { useEffect, useState, useMemo } from "react"
 
 type GuestPanelProps = {
     // 상위 컴포넌트 (AuthModal)에서 게스트 입장 로직 설계
-    onEnter: () => void | Promise<void>
+    onEnter: (opts?: { 
+        nickname?: string 
+        ttlMs?: number 
+    }) => void | Promise<void>
     onValidChange?: (valid: boolean) => void
 }
 
@@ -33,7 +36,10 @@ export default function GuestPanel({
         e.preventDefault()
 
         if(!valid) return
-        await onEnter()
+
+        const nName = nickname.trim()
+        const opts = nName ? { nickname: nName } : undefined
+        await onEnter(opts)
     }
 
     return (

@@ -1,7 +1,7 @@
 // /app/[locale]/(with-layout)/layout.tsx - 홈 페이지 이후 레이아웃
 import Header from "@/components/layout/Header"
 import Footer from "@/components/layout/Footer"
-import AuthGate from "@/components/mainpage/auth/hook/AuthGate"
+import AuthGate from "@/components/mainpage/auth/Gate/AuthGate"
 
 export default function MainLayout({
   children,
