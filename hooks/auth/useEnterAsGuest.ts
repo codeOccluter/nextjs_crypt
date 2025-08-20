@@ -19,8 +19,6 @@ export default function useEnterAsGuest() {
         setPending(true)
         setError(null)
 
-        console.log(`opts: ${opts}`)
-
         try{
             await axiosClient.post(`/api/auth/guest`, {
                 nickname: opts?.nickname,

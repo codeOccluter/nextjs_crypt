@@ -1,5 +1,5 @@
-import { ClientSQL, ensureClientDBReady } from "@/lib/db/client-db"
-import { Entities } from "@/lib/orm/entities"
+import { ClientSQL, ensureClientDBReady } from "@/server/model/client-db"
+import { Entities } from "@/server/model/orm/entities"
 import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies"
 import { cookies } from "next/headers"
 
@@ -16,7 +16,6 @@ export async function createGuest({
     const guestRepo = ClientSQL.getRepository(Entities.GuestUser)
 
     const tempNickname = nickname ?? `${Date.now()}_${Math.random().toString(36).slice(2)}`
-    console.log(`=======Nickname: ${nickname}============`)
     let guest = guestRepo.create({
         nickname: tempNickname,
         role: 0,

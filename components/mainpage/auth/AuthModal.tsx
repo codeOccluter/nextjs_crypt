@@ -2,9 +2,9 @@
 
 import { useState } from "react"
 import LoginModal from "@/components/mainpage/auth/LoginModal"
-import LoginForm from "./Form/LoginForm"
-import RegisterForm from "./Form/RegisterForm"
-import GuestPanel from "./Form/GuestPanel"
+import LoginForm from "./EnterForm/LoginForm"
+import RegisterForm from "./EnterForm/RegisterForm"
+import GuestPanel from "./EnterForm/GuestPanel"
 
 type Props = {
     open: boolean

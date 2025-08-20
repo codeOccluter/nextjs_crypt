@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server"
-import { ClientSQL, ensureClientDBReady } from "@/lib/db/client-db"
-import { Entities } from "@/lib/orm/entities"
+import { ClientSQL, ensureClientDBReady } from "@/server/model/client-db"
+import { Entities } from "@/server/model/orm/entities"
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,11 +26,6 @@ export async function DELETE(_req: NextRequest) {
         .from(Entities.GuestUser)
         .where("expires_at <= NOW")
         .execute()
-    // const now = new Date()
-    // const all = await repo.find()
-    // const expired = all.filter((g) => new Date(g.expires_at) <= now)
-    // console.log(`expired: ${expired}`)
-    // if(expired.length) await repo.remove(expired)
 
     return Response.json({ removed: result.affected ?? 0 }, { status: 200 })
 }

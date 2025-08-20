@@ -2,8 +2,8 @@
 
 import { LogOut, Loader2 } from "lucide-react"
 import FullscreenLoader from "@/components/common/FullscreenLoader"
-import useAuthStatus from "./hook/useAuthStatus"
-import useEnterAsGuest from "./hook/useEnterAsGuest"
+import useAuthStatus from "../../../hooks/auth/useAuthStatus"
+import useEnterAsGuest from "../../../hooks/auth/useEnterAsGuest"
 import { useRouter, usePathname } from "next/navigation"
 import { useState } from "react"
 import ConfirmModal from "@/components/common/ConfirmModal"

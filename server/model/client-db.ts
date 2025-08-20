@@ -1,6 +1,6 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
-import { Entities, EntityList } from "@/lib/orm/entities"
+import { Entities, EntityList } from "@/server/model/orm/entities"
 
 declare global {
     var _clientSQL: DataSource | undefined

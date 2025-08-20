@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react"
 import AuthModal from "../AuthModal"
-import useAuthStatus from "./useAuthStatus"
-import useEnterAsGuest from "./useEnterAsGuest"
+import useAuthStatus from "../../../../hooks/auth/useAuthStatus"
+import useEnterAsGuest from "../../../../hooks/auth/useEnterAsGuest"
 
 type Props = {
     children: React.ReactNode
