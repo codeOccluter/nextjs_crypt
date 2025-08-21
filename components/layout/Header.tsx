@@ -4,11 +4,11 @@ import "@/styles/components/layout/header.css"
 import Link from "next/link"
 import Dropdown from "../common/Dropdown"
 import GuestLogoutButton from "../mainpage/auth/GuestLogoutButton"
-import useAuthStatus from "../../hooks/auth/useAuthStatus"
+import useSessionQuery from "../../hooks/auth/useSessionQuery"
 
 export default function Header() {
 
-    const { status, user } = useAuthStatus()
+    const { status, user } = useSessionQuery()
 
     const navLinks = [
         { href: "/", label: "Home" },

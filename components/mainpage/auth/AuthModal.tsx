@@ -8,7 +8,8 @@ import GuestPanel from "./EnterForm/GuestPanel"
 
 type Props = {
     open: boolean
-    onLogin?: (v: { 
+    pending?: boolean
+    onEmailLogin?: (v: { 
         email: string
         password: string
      }) => Promise<void> | void
@@ -20,7 +21,7 @@ type Props = {
         password: string
         primaryLang?: string
     }) => Promise<void> | void
-     onGuest?: (opts?: { 
+     onGuestLogin?: (opts?: { 
         nickname?: string
         ttlMs?: number
       }) => Promise<void> | void
@@ -33,13 +34,12 @@ const tabs = [
 ] as const
 type TabKey = typeof tabs[number]["key"]
 
-export default function AuthModal({ open, onLogin, onRegister, onGuest }: Props) {
+export default function AuthModal({ open, pending, onEmailLogin, onRegister, onGuestLogin }: Props) {
 
     const [tab, setTab] = useState<TabKey>("login")
     const [validLogin, setValidLogin] = useState(false)
     const [validRegister, setValidRegister] = useState(false)
     const [validGuest, setValidGuest] = useState(true)
-    const [pending, setPending] = useState(false)
 
     const primaryLabel = tab === "login" ? "로그인" : tab === "register" ? "가입하기" : "게스트로 시작"
 
@@ -76,7 +76,7 @@ export default function AuthModal({ open, onLogin, onRegister, onGuest }: Props)
 
             {tab === "login" && (
                 <LoginForm 
-                    onSubmit={async (v) => { await onLogin?.(v) }}
+                    onSubmit={async (v) => { await onEmailLogin?.(v) }}
                     onValidChange={setValidLogin}
                 />
             )}
@@ -88,7 +88,7 @@ export default function AuthModal({ open, onLogin, onRegister, onGuest }: Props)
             )}
             {tab === "guest" && (
                 <GuestPanel 
-                    onEnter={async (opts) => { await onGuest?.(opts) }}
+                    onGuestSubmit={async (opts) => { await onGuestLogin?.(opts) }}
                     onValidChange={setValidGuest}
                 />
             )}

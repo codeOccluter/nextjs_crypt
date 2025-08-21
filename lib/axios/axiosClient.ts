@@ -20,17 +20,38 @@ const axiosClient = axios.create({
 })
 
 let isRefreshing = false
-let pendingQueue: Array<() => void> = []
+type QueueItem = {
+    resolve: (value: any) => void
+    reject: (reason?: any) => void
+}
+let pendingQueue: QueueItem[] = []
+
+const setAuthHeader = (token: string | null) => {
+    if(token) {
+        axiosClient.defaults.headers.common.Authorization = `Bearer ${token}`
+    }else {
+        delete axiosClient.defaults.headers.common.Authorization
+    }
+}
+
+const getAccessToken = () => 
+    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null
+
+const saveAccessToken = (token: string | null) => {
+    if(typeof window == "undefined") return
+    if(token) localStorage.setItem("accessToken", token)
+    else localStorage.removeItem("accessToken")
+}
 
 axiosClient.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
         
-        const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null
+        const token = getAccessToken()
         if(token) {
             config.headers.Authorization = `Bearer ${token}`
         }
 
-        config.headers["X-Request-With"] = "XMLHttpRequest"
+        config.headers["X-Requested-With"] = "XMLHttpRequest"
         return config
     },
     (error) => Promise.reject(error)
@@ -48,52 +69,74 @@ axiosClient.interceptors.response.use(
         }
 
         const status = error.response?.status ?? 0
+
         if(status === 401 && original && !original._retry) {
             
             original._retry = true
 
             if(!isRefreshing) {
-                isRefreshing = true
-
-                try {
-                    const { data } = await axios.post(
-                        (process.env.NEXT_PUBLIC_API_BASE_URL || "") + "/api/auth/refresh",
-                        {},
-                        { withCredentials: true },
-                    )
-
-                    pendingQueue.forEach((cb) => cb())
-                    pendingQueue = []
-
-                    return axiosClient(original)
-                }catch(error) {
-                    pendingQueue = []
-
-                    if(typeof window !== "undefined") {
-                        localStorage.removeItem("accessToken")
-                    }
-                    return Promise.reject<never>({
-                        status: 401,
-                        message: "Session expired. Please log in again."
-                    } satisfies ApiError)
-                }finally {
-                    isRefreshing = false
-                }
+                return new Promise((resolve, reject) => {
+                    pendingQueue.push({
+                        resolve: () => resolve(axiosClient(original)),
+                        reject
+                    })
+                })
             }
 
-            return new Promise((resolve) => {
-                pendingQueue.push(async () => resolve(axiosClient(original)))
-            })
+            isRefreshing = true
+
+            try {
+                // refresh 요청 → 전역 인터셉터 영향을 최소화 - "순수 axios 사용"
+                const refreshUrl = (process.env.NEXT_PUBLIC_API_BASE_URL || "") + `/api/auth/refresh`
+
+                const { data } = await axios.post<{ accessToken?: string }>(
+                    refreshUrl,
+                    {},
+                    { withCredentials: true }
+                )
+
+                const newToken = data?.accessToken ?? null
+
+                saveAccessToken(newToken)
+                setAuthHeader(newToken)
+
+                if(newToken && original?.headers) {
+                    original.headers.Authorization = `Bearer ${newToken}`
+                }else if(original?.headers) {
+                    delete (original.headers as any).Authorization
+                }
+
+                pendingQueue.forEach((pending) => pending.resolve(null))
+                pendingQueue = []
+
+                return axiosClient(original)
+            }catch(err) {
+                pendingQueue.forEach((pending) => pending.reject({
+                    status: 401,
+                    message: `Session expired. Please login again`
+                } satisfies ApiError))
+                pendingQueue = []
+
+                saveAccessToken(null)
+                setAuthHeader(null)
+
+                return Promise.reject<never>({
+                    status: 401,
+                    message: `Session expired. Please login again`,
+                } satisfies ApiError)
+            }finally {
+                isRefreshing = false
+            }
         }
 
-        const resp = error.response as any
+        const resp = error.response as any;
         const normalized: ApiError = {
-            status,
-            code: resp?.data?.code,
-            message: resp?.data?.message || error.message || "Unknown error",
-            details: resp?.data?.details,
-        }
-        return Promise.reject(normalized)
+        status,
+        code: resp?.data?.code,
+        message: resp?.data?.message || error.message || "Unknown error",
+        details: resp?.data?.details,
+        };
+        return Promise.reject(normalized);
     }
 )
 

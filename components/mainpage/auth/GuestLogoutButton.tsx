@@ -2,8 +2,8 @@
 
 import { LogOut, Loader2 } from "lucide-react"
 import FullscreenLoader from "@/components/common/FullscreenLoader"
-import useAuthStatus from "../../../hooks/auth/useAuthStatus"
-import useEnterAsGuest from "../../../hooks/auth/useEnterAsGuest"
+import useSessionQuery from "../../../hooks/auth/useSessionQuery"
+import useGuestLogout from "@/hooks/auth/useGuestLogout"
 import { useRouter, usePathname } from "next/navigation"
 import { useState } from "react"
 import ConfirmModal from "@/components/common/ConfirmModal"
@@ -13,8 +13,8 @@ export default function GuestLogoutButton({
     redirectToLanding = false
 }: { redirectToLanding?: boolean }) {
 
-    const { status, refresh } = useAuthStatus()
-    const { leave, pending } = useEnterAsGuest()
+    const { status, refresh } = useSessionQuery()
+    const { guestLogout, pending, guestLogoutError } = useGuestLogout()
 
     const router = useRouter()
     const pathname = usePathname()
@@ -40,10 +40,7 @@ export default function GuestLogoutButton({
         setProcessing(true)
 
         try{
-            await axiosClient.delete(`/api/auth/guest`, {
-                withCredentials: true
-            })
-            
+            guestLogout()
             if(redirectToLanding) {
                 const locale = extractLocale()
                 router.replace(`/${locale}`)
@@ -51,7 +48,7 @@ export default function GuestLogoutButton({
             router.refresh()
             await refresh()
         }catch(err) {
-            console.error(`[Guest logout] failed ${err}`)
+            guestLogoutError()
         }finally {
             setProcessing(false)
             setConfirmOpen(false)
