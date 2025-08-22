@@ -12,14 +12,15 @@ export default function SessionGate({
 }: Props) {
 
     const { guestLogin, pending } = useGuestLogin()
-    const { status, refresh, user } = useSessionQuery()
+    const { status, query, refresh, user } = useSessionQuery()
 
     const [open, setOpen] = useState(false)
 
 
     useEffect(() => {
 
-        console.log(`user: ${Object(user)}`)
+        console.log(`query: ${JSON.stringify(query.data?.user?.role)}`)
+        console.log(`user: ${JSON.stringify(user)}`)
         console.log(`SessionGate: ${status}`)
         if(status === "unauthenticated") setOpen(true)
         if(status === "authenticated" || status === "guest") setOpen(false)
