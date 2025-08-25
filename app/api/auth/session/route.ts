@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { headers } from "next/headers"
 import { verifyToken } from "@/services/auth/jwt"
+import { toGuestNickname } from "@/lib/common/user/function.user"
 
 export async function GET() {
   // 1) 토큰 파싱
@@ -9,7 +10,7 @@ export async function GET() {
 
     // 2) 토큰이 있으면 검증, 없으면 payload는 null
     const payload = token
-        ? await verifyToken<{ sub: string; role: number }>(token).catch(() => null)
+        ? await verifyToken<{ guestId: string; role: number, nickname: string, guestIdx: number }>(token).catch(() => null)
         : null
 
     // 3) 응답 헤더(캐시 방지 + 프록시 캐시 안전)
@@ -43,8 +44,7 @@ export async function GET() {
     // 4-C) 유효한 토큰 → 로그인 상태
     return NextResponse.json(
         {
-            authenticated: true,
-            user: { id: payload.sub, role: payload.role, name: "Guest" },
+            user: { guestId: payload.guestId, role: payload.role, nickname: toGuestNickname(payload.guestId, payload.guestIdx), guestIdx: payload.guestIdx },
         },
         { ...baseInit, status: 200 }
     )

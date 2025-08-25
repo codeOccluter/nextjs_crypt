@@ -5,10 +5,11 @@ import Link from "next/link"
 import Dropdown from "../common/Dropdown"
 import GuestLogoutButton from "../mainpage/auth/GuestLogoutButton"
 import useSessionQuery from "../../hooks/auth/useSessionQuery"
+import { toGuestNickname } from "@/lib/common/user/function.user"
 
 export default function Header() {
 
-    const { status, user } = useSessionQuery()
+    const { status, query } = useSessionQuery()
 
     const navLinks = [
         { href: "/", label: "Home" },
@@ -26,18 +27,17 @@ export default function Header() {
         if(status === "loading") return null
         // if(status !== "guest" && status !== "authenticated")  return null
 
-        let name: string | undefined = ""
+        let nickname: string | undefined = ""
         if(status === "guest") {
-            name = user?.name
+            nickname = toGuestNickname(query.data?.user.guestId, query.data?.user.guestIdx)
         }
-        // const name = user?.name ?? "게스트"
 
         return (
             <span
                 className="ml-4 hidden sm:inline text-sm text-white/85 truncate max-w-[16rem]"
-                title={`${name} 님 안녕하세요!`}
+                title={`${nickname} 님 안녕하세요!`}
             >
-                {name} 님 안녕하세요!
+                {nickname} 님 안녕하세요!
             </span>
         )
     }

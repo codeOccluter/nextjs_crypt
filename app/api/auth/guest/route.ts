@@ -23,8 +23,8 @@ export async function POST(req: NextRequest) {
     const { nickname, ttlMs } = body ?? {}
     const guest = await createGuest({ nickname, ttlMs })
 
-    const accessToken = await signAccessToken({ sub: guest.id, role: 0 })
-    const refreshToken = await signRefreshToken({ sub: guest.id, role: 0 })
+    const accessToken = await signAccessToken({ guestId: guest.id, role: guest.role, nickname: guest.nickname, guestIdx: guest.idx })
+    const refreshToken = await signRefreshToken({ guestId: guest.id, role: guest.role, nickname: guest.nickname, guestIdx: guest.idx })
 
     const response = NextResponse.json(
         { 

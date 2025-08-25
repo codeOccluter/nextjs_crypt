@@ -2,6 +2,7 @@ import { ClientSQL, ensureClientDBReady } from "@/server/model/client-db"
 import { Entities } from "@/server/model/orm/entities"
 import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies"
 import { cookies } from "next/headers"
+import { toGuestNickname, toGuestTempNickname } from "@/lib/common/user/function.user"
 
 type GuestEnterOptions = {
     nickname?: string
@@ -15,7 +16,7 @@ export async function createGuest({
     await ensureClientDBReady()
     const guestRepo = ClientSQL.getRepository(Entities.GuestUser)
 
-    const tempNickname = nickname ?? `${Date.now()}_${Math.random().toString(36).slice(2)}`
+    const tempNickname = toGuestTempNickname(nickname)
     let guest = guestRepo.create({
         nickname: tempNickname,
         role: 0,
@@ -24,8 +25,8 @@ export async function createGuest({
     guest = await guestRepo.save(guest)
 
     if(!nickname) {
-        const uuid4 = guest.id.replace(/-/g, "").slice(0, 4).toUpperCase()
-        const finalNickname = `Guest_${uuid4}${guest.idx}`
+
+        const finalNickname = toGuestNickname(guest.id, guest.idx)
 
         await guestRepo.update(
             { id: guest.id },

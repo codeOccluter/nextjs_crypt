@@ -16,12 +16,12 @@ export default function SessionGate({
 
     const [open, setOpen] = useState(false)
 
-
     useEffect(() => {
 
-        console.log(`query: ${JSON.stringify(query.data?.user?.role)}`)
+        console.log(`query.data.role: ${JSON.stringify(query.data)}`)
+        console.log(`query.isLoading: ${query.isLoading}`)
         console.log(`user: ${JSON.stringify(user)}`)
-        console.log(`SessionGate: ${status}`)
+        console.log(`Status: ${status}`)
         if(status === "unauthenticated") setOpen(true)
         if(status === "authenticated" || status === "guest") setOpen(false)
     }, [status])
@@ -54,7 +54,7 @@ export default function SessionGate({
         await refresh()
     }
 
-    if(status === "loading") return null
+    // if(status === "loading") return null
 
     if(open) {
         return (

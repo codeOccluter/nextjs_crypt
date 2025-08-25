@@ -5,11 +5,13 @@ import axiosClient from "@/lib/axios/axiosClient"
 
 export type AuthStatus = "authenticated" | "guest" | "unauthenticated" | "loading"
 export type SessionUser = {
-    id: string
-    name: string
-    role: 0 | 1 | 2 // 0: guest, 1: user, 2: admin
-    email?: string
-    // ... 필요한 필드 추가 작성
+    user: {
+        guestId: string
+        role: 0 | 1 | 2
+        nickname: string
+        email?: string
+        guestIdx: number
+    }
 }
 
 export const SESSION_QUERY_KEY = ["session"] as const
@@ -36,34 +38,23 @@ export default function useSessionQuery() {
         retry: false
     })
 
-    const getAuthStatus = () => {
+    const getAuthStatus = (): AuthStatus => {
 
-        let status: AuthStatus
+        const user = query.data?.user
+        // console.log(`getAuthStatus: | ${JSON.stringify(query.data?.user)}`)
+        let status: AuthStatus = "unauthenticated"
+        if(!user) {
+            return status
+        }
 
-        if(query.isLoading) {
-            status = "loading"
-        }else if(query.data && query.data.role === 0) {
+        if(user.role === 0) {
             status = "guest"
-            if(query.data.role === 0) {
-                status = "guest"
-            }else if(query.data.role === 1 || query.data.role === 2) {
-                status = "authenticated"
-            }
-        }else {
-            status = "unauthenticated"
         }
 
         return status
     }
 
     const status = getAuthStatus()
-
-    // const status: AuthStatus =
-    //     query.isLoading
-    //         ? "loading"
-    //         : query.data
-    //             ? (query.data.role === 0 ? "guest" : "authenticated")
-    //             : "unauthenticated"
 
     return {
         status,
