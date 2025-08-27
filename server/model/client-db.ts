@@ -23,14 +23,24 @@ if(!global._clientSQL) {
 }
 
 export async function ensureClientDBReady() {
-
     if(!ClientSQL.isInitialized) await ClientSQL.initialize()
 
-    if(!ClientSQL.hasMetadata(Entities.GuestUser)) {
-        await ClientSQL.destroy();
-        (ClientSQL.options as any).entities = EntityList
+    const allRegistered = EntityList.every((entity) => {
+        ClientSQL.hasMetadata(entity)
+    })
+
+    console.log(allRegistered)
+
+    if(!allRegistered) {
+        await ClientSQL.destroy()
+        ;(ClientSQL.options as any).entities = EntityList
         await ClientSQL.initialize()
     }
+    // if(!ClientSQL.hasMetadata(Entities.GuestUser)) {
+    //     await ClientSQL.destroy();
+    //     (ClientSQL.options as any).entities = EntityList
+    //     await ClientSQL.initialize()
+    // }
 }
 
 export { Entities }

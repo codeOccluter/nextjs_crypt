@@ -1,8 +1,11 @@
-"use client"
+import Card from "../common/card/Card"
+import { ClientSQL, ensureClientDBReady } from "@/server/model/client-db"
+import { Entities } from "@/server/model/orm/entities"
 
-import { motion } from "framer-motion"
+export default async function MainComponent() {
+    await ensureClientDBReady()
 
-export default function MainComponent() {
+    const repo = ClientSQL.getRepository(Entities.DataFunction)
 
     return (
         <div>

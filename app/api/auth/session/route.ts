@@ -17,7 +17,6 @@ export async function GET() {
     const baseInit: ResponseInit = {
             headers: {
                 "Cache-Control": "no-store",
-                // 권장: Authorization 헤더에 따라 응답이 달라지므로 캐시 구분
                 Vary: "Authorization",
             },
     }
@@ -34,7 +33,7 @@ export async function GET() {
     if (!payload) {
         const res = NextResponse.json(
             { status: "unauthenticated" },
-            { ...baseInit, status: 401 }
+            { ...baseInit, status: 200 }
         )
         // 권장: 401에는 WWW-Authenticate 헤더를 달아주면 표준적
         res.headers.set("WWW-Authenticate", 'Bearer error="invalid_token"')
@@ -44,7 +43,12 @@ export async function GET() {
     // 4-C) 유효한 토큰 → 로그인 상태
     return NextResponse.json(
         {
-            user: { guestId: payload.guestId, role: payload.role, nickname: toGuestNickname(payload.guestId, payload.guestIdx), guestIdx: payload.guestIdx },
+            user: { 
+                guestId: payload.guestId, 
+                role: payload.role, 
+                nickname: toGuestNickname(payload.guestId, payload.guestIdx), 
+                guestIdx: payload.guestIdx 
+            },
         },
         { ...baseInit, status: 200 }
     )

@@ -69,7 +69,8 @@ export default function GuestLogoutButton({
                             text-[15px] leading-8 font-semibold tracking-tight
                             shadow-lg transition-all
                             hover:border-rose-400 hover:shadow-rose-300 hover:-translate-y-[0.5px]
-                            active:translate-y-0"
+                            active:translate-y-0
+                            flex-shrink-0"                            
                 aria-label="Guest Logout"
             >
                 <LogOut size={16} className="text-zinc-700 translate-y-[0.5px]" />

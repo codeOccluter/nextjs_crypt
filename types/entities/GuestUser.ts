@@ -13,7 +13,7 @@ export class GuestUser {
     @PrimaryGeneratedColumn("uuid")
     id!: string
 
-    @Index({ unique: true })
+    @Index("uq_guest_users_idx", { unique: true })
     @Column({ type: "int" })
     @Generated("increment")
     idx!: number
@@ -30,23 +30,4 @@ export class GuestUser {
 
     @CreateDateColumn({ type: "datetime" })
     created_at!: Date
-
-    // @BeforeInsert()
-    // generateNickname() {
-    //     if(!this.nickname) {
-    //         const shortId = this.id
-    //             ? this.id.replace(/-/g, "").substring(0, 4).toUpperCase()
-    //             : Math.random().toString(36).substring(2, 8).toUpperCase()
-
-    //         this.nickname = `Guest-${shortId}${this.idx}`
-    //     }
-
-    //     if(!this.expires_at) {
-    //         this.created_at = new Date(Date.now() + 1000 * 60 * 60 * 24)
-    //     }
-
-    //     if(!this.role) {
-    //         this.role = 0
-    //     }
-    // }
 }
