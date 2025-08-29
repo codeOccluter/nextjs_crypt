@@ -16,7 +16,7 @@ export const ServerDB = global._serverDB ?? new DataSource({
     synchronize: true,
     // synchronize: true는 개발 단계에서만, 실무 배포 시에는 "migration" 사용
     logging: true,
-    entities: EntityList
+    entities: [Entities.GuestUser]
 })
 
 if(!global._serverDB) {

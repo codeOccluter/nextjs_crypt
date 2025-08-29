@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo } from "react"
 
 type GuestPanelProps = {
     // 상위 컴포넌트 (AuthModal)에서 게스트 입장 로직 설계
-    onEnter: (opts?: { 
+    onGuestSubmit: (opts?: { 
         nickname?: string 
         ttlMs?: number 
     }) => void | Promise<void>
@@ -12,20 +12,20 @@ type GuestPanelProps = {
 }
 
 export default function GuestPanel({
-    onEnter,
+    onGuestSubmit,
     onValidChange
 }: GuestPanelProps) {
 
     // TODO:
     // 약관 동의 (검증 단계 구현)
     const [agree, setAgree] = useState(false)
-    // TODO: 닉네임 설정기능
     const [nickname, setNickname] = useState("")
 
     const valid = useMemo(() => {
         
-        const nicknameOK = nickname.trim().length === 0 || (nickname.trim().length >=2 && nickname.trim().length <= 8)
-        return agree && nicknameOK
+        const inputNicknameLength = nickname.trim().length
+        const nicknameValid = inputNicknameLength === 0 || (inputNicknameLength >=2 && inputNicknameLength <= 8)
+        return agree && nicknameValid
     }, [agree, nickname])
 
     useEffect(() => {
@@ -39,7 +39,7 @@ export default function GuestPanel({
 
         const nName = nickname.trim()
         const opts = nName ? { nickname: nName } : undefined
-        await onEnter(opts)
+        await onGuestSubmit(opts)
     }
 
     return (
