@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useMemo } from "react"
-import Input from "@/components/common/Input"
+import Input from "@/components/ui/common/Input"
 
 type LoginFormProps = {
     onSubmit: (v: {

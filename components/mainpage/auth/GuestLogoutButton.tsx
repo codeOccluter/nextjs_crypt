@@ -1,12 +1,12 @@
 "use client"
 
 import { LogOut, Loader2 } from "lucide-react"
-import FullscreenLoader from "@/components/common/FullscreenLoader"
+import FullscreenLoader from "@/components/ui/common/FullscreenLoader"
 import useSessionQuery from "../../../hooks/auth/useSessionQuery"
 import useGuestLogout from "@/hooks/auth/useGuestLogout"
 import { useRouter, usePathname } from "next/navigation"
 import { useState } from "react"
-import ConfirmModal from "@/components/common/ConfirmModal"
+import ConfirmModal from "@/components/ui/common/ConfirmModal"
 import axiosClient from "@/lib/axios/axiosClient"
 
 export default function GuestLogoutButton({

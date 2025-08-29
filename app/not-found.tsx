@@ -1,6 +1,6 @@
 "use client"
 
-import NotFoundPage from "@/components/common/not-found/NotFoundPage"
+import NotFoundPage from "@/components/ui/common/not-found/NotFoundPage"
 import "@/styles/glitch/glitch.css"
 
 export default function NotFound() {

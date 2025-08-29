@@ -8,9 +8,7 @@ import {
     DeleteDateColumn,
 } from "typeorm"
 
-export type Variant = "default" | "dashboard" | "cryptography" | "compact"
-export type TagTone = "blue" | "slate" | "emerald" | "violet" | "rose"
-export type Visibility = "public" | "guest" | "authenticated" | "admin"
+import { type Variant, type TagTone, type Visibility } from "@/contants/data-function/defines"
 
 @Entity("data_functions")
 export class DataFunction {

@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { FaSpinner } from "react-icons/fa"
 import { BsGlobe2 } from "react-icons/bs"
-import Typewriter from "@/components/common/typewriter/Typewriter"
+import Typewriter from "@/components/ui/common/typewriter/Typewriter"
 
 export default function LandingPageClient({ locale }: { locale: string }) {
 

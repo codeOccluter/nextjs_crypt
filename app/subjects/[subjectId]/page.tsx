@@ -1,7 +1,7 @@
 "use client"
 
 import { ReactNode } from "react"
-import NotFoundPage from "@/components/common/not-found/NotFoundPage"
+import NotFoundPage from "@/components/ui/common/not-found/NotFoundPage"
 import DatabaseContent from "@/components/subjects/DatabaseContent"
 import OsContent from "@/components/subjects/OsContent"
 import AlgorithmContent from "@/components/subjects/AlgorithmContent"

@@ -3,9 +3,9 @@
 import "@/styles/components/layout/header.css"
 import Link from "next/link"
 import Dropdown from "../common/Dropdown"
-import GuestLogoutButton from "../mainpage/auth/GuestLogoutButton"
-import useSessionQuery from "../../hooks/auth/useSessionQuery"
-import { toGuestNickname } from "@/lib/common/user/function.user"
+import GuestLogoutButton from "../../mainpage/auth/GuestLogoutButton"
+import useSessionQuery from "../../../hooks/auth/useSessionQuery"
+import { toGuestNickname } from "@/features/auth/guest/feature.guest"
 import { useEffect, useRef, useState } from "react"
 import clsx from "clsx"
 
@@ -22,7 +22,7 @@ export default function Header() {
     ]
 
     const algoLinks = [
-        { href: "/encrypt/des", label: "DES" },
+        { href: "/data-functions/new", label: "DataFunction" },
         { href: "/encrypt/aes", label: "AES" },
         { href: "/encrypt/rsa", label: "RSA" }
     ]
@@ -96,7 +96,7 @@ export default function Header() {
                                 </li>                        
                             ))}
                             <li className="relative">
-                                <Dropdown label="Algorithm" items={algoLinks} /> 
+                                <Dropdown label="InsertData" items={algoLinks} /> 
                             </li>
                         </ul>
                     </nav>
