@@ -23,14 +23,14 @@ if(!global._serverDB) {
     global._serverDB = ServerDB
 }
 
-// export async function ensureServerDBReady() {
-//     if(!ServerDB.isInitialized) await ServerDB.initialize()
+export async function ensureServerDBReady() {
+    if(!ServerDB.isInitialized) await ServerDB.initialize()
 
-//     if(!ServerDB.hasMetadata(Entities.User)) {
-//         await ServerDB.destroy();
-//         (ServerDB.options as any).entities = EntityList
-//         await ServerDB.initialize()
-//     }
-// }
+    if(!ServerDB.hasMetadata(Entities.User)) {
+        await ServerDB.destroy();
+        (ServerDB.options as any).entities = EntityList
+        await ServerDB.initialize()
+    }
+}
 
 export { Entities }

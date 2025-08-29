@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { headers } from "next/headers"
 import { verifyToken } from "@/services/auth/jwt"
-import { toGuestNickname } from "@/lib/common/user/function.user"
+import { toGuestNickname } from "@/features/auth/guest/feature.guest"
 
 export async function GET() {
   // 1) 토큰 파싱

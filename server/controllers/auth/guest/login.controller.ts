@@ -2,7 +2,7 @@ import { ClientSQL, ensureClientDBReady } from "@/server/model/client-db"
 import { Entities } from "@/server/model/orm/entities"
 import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies"
 import { cookies } from "next/headers"
-import { toGuestNickname, toGuestTempNickname } from "@/lib/common/user/function.user"
+import { toGuestNickname, toGuestTempNickname } from "@/features/auth/guest/feature.guest"
 
 type GuestEnterOptions = {
     nickname?: string
