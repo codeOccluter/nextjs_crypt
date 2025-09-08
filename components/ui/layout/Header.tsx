@@ -5,7 +5,7 @@ import Link from "next/link"
 import Dropdown from "../common/Dropdown"
 import GuestLogoutButton from "../../mainpage/auth/GuestLogoutButton"
 import useSessionQuery from "../../../hooks/auth/useSessionQuery"
-import { toGuestNickname } from "@/features/auth/guest/feature.guest"
+import { toGuestNickname } from "@/features/auth/guest/guest.formatter"
 import { useEffect, useRef, useState } from "react"
 import clsx from "clsx"
 
@@ -17,7 +17,7 @@ export default function Header() {
 
     const navLinks = [
         { href: "/", label: "Home" },
-        { href: "/about", label: "Introduce" },
+        { href: "/main/introduce", label: "Introduce" },
         { href: "/docs", label: "Document" },
     ]
 

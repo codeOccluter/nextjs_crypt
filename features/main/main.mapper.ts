@@ -3,11 +3,11 @@ import {
     type Variant,
     type TagTone,
     type Visibility
-} from "@/contants/data-function/defines"
+} from "@/features/data-functions/new/new.constants"
 import {
     DataFunctionRow,
     type CardProps
-} from "@/contants/data-function/types"
+} from "@/features/data-functions/new/new.types"
 
 const isVariant = (v: any): v is Variant => 
     DataFunctionDefines.DATA_FUNCTION.variants.includes(v as Variant)

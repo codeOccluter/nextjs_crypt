@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
-import { DataFunctionDefines } from "@/contants/data-function/defines"
+import { DataFunctionDefines } from "@/features/data-functions/new/new.constants"
 import { ensureClientDBReady, ClientSQL } from "@/server/model/client-db"
 import { Entities } from "@/server/model/client-db"
 

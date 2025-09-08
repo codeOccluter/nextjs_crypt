@@ -1,4 +1,4 @@
-import type { Variant, TagTone, Visibility } from "./defines"
+import type { Variant, TagTone, Visibility } from "../../../features/data-functions/new/new.constants"
 
 export type DataFunctionRow = {
     id: string
