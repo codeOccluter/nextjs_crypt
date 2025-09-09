@@ -1,8 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { DataFunctionDefines, type Variant } from "@/contants/data-function/defines"
-import { CardProps } from "@/contants/data-function/types"
+import { DataFunctionDefines, type Variant } from "@/features/data-functions/new/new.constants"
+import { CardProps } from "@/features/data-functions/new/new.types"
+import ArrowIcon from "../Icons/ArrowIcons"
 
 export default function Card({
     title,
@@ -57,7 +58,7 @@ export default function Card({
             {href && !disabled && (
                 <div className="mt-auto flex-items-center gap-2 text-sm font-medium text-blue-700 dark:text-blue-400">
                     <span>{cta}</span>
-                    <DataFunctionDefines.ArrowIcon />
+                    <ArrowIcon />
                 </div>
             )}
         </div>

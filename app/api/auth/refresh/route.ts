@@ -9,9 +9,23 @@ const COOKIE_BASE = {
     path: "/" as const
 }
 
+function clearCookie(response: NextResponse, name: string) {
+    response.cookies.set({
+        name,
+        value: "",
+        ...COOKIE_BASE,
+        maxAge: 0,
+        expires: new Date(0)
+    })
+}
+
 export async function POST() {
 
-    // 1) 쿠키 검증 (refresh_token, guest_id)
+    const refresh = cookies().get("refresh_token")?.value
+    if(!refresh) {
+        return NextResponse.json({ message: "No refresh token" }, { status: 401 })
+    }
+    
     try {
 
         const refreshToken = cookies().get("refresh_token")?.value

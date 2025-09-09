@@ -1,6 +1,5 @@
 "use client"
 
-import Card from "../ui/common/card/Card"
 import { ReactNode, useState } from "react"
 
 type Variant = "default" | "dashboard" | "cryptography" | "compact"

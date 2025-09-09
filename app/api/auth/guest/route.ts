@@ -16,6 +16,16 @@ const COOKIE_BASE = {
     secure: process.env.NODE_ENV === "production",
 }
 
+function clearCookie(response: NextResponse, name: string) {
+    response.cookies.set({
+        name,
+        value: "",
+        ...COOKIE_BASE,
+        maxAge: 0,
+        expires: new Date(0)
+    })
+}
+
 // Guest 로그인 시 ID 생성 및 저장
 export async function POST(req: NextRequest) {
 
@@ -23,8 +33,15 @@ export async function POST(req: NextRequest) {
     const { nickname, ttlMs } = body ?? {}
     const guest = await createGuest({ nickname, ttlMs })
 
-    const accessToken = await signAccessToken({ guestId: guest.id, role: guest.role, nickname: guest.nickname, guestIdx: guest.idx })
-    const refreshToken = await signRefreshToken({ guestId: guest.id, role: guest.role, nickname: guest.nickname, guestIdx: guest.idx })
+    const basePayload = { 
+        guestId: guest.id, 
+        role: guest.role, 
+        nickname: guest.nickname,
+        guestIdx: guest.idx 
+    }
+
+    const accessToken = await signAccessToken(basePayload)
+    const refreshToken = await signRefreshToken(basePayload)
 
     const response = NextResponse.json(
         { 
@@ -32,7 +49,7 @@ export async function POST(req: NextRequest) {
             name: guest.nickname, 
             role: 0 as const,
             accessToken,
-            accessTokenExpiresIn: 15 * 60,
+            accessTokenExpiresIn: 60 * 60,
         },
         { status: 201 }
     )
@@ -41,15 +58,9 @@ export async function POST(req: NextRequest) {
         name: "refresh_token",
         value: refreshToken,
         ...COOKIE_BASE,
-        maxAge: 7 * 24 * 60 * 60
+        maxAge: 2 * 60 * 60 // 개발중, 서비스 전환 시: 24 * 60 * 60
     })
-    response.cookies.set({
-        name: "guest_id",
-        value: "",
-        ...COOKIE_BASE,
-        maxAge: 0,
-        expires: new Date(0)
-    })
+    clearCookie(response, "guest_id")
     response.headers.set("Cache-Control", "no-store")
 
     return response
@@ -76,20 +87,8 @@ export async function DELETE() {
         }
     }
 
-    response.cookies.set({
-        name: "refresh_token",
-        value: "",
-        ...COOKIE_BASE,
-        maxAge: 0,
-        expires: new Date(0)
-    })
-    response.cookies.set({
-        name: "guest_id",
-        value: "",
-        ...COOKIE_BASE,
-        maxAge: 0,
-        expires: new Date(0)
-    })
+    clearCookie(response, "refresh_token")
+    clearCookie(response, "guest_id")
 
     return response
 }
