@@ -3,7 +3,6 @@
 import "@/styles/components/layout/header.css"
 import LocaleLink from "../common/i18n/LocaleLink"
 import Dropdown from "../common/Dropdown"
-import GuestLogoutButton from "../../mainpage/auth/GuestLogoutButton"
 import useSessionQuery from "../../../hooks/auth/useSessionQuery"
 import { toGuestNickname } from "@/features/auth/guest/guest.formatter"
 import { useEffect, useRef, useState } from "react"
@@ -12,6 +11,8 @@ import { useParams, usePathname, useRouter, useSearchParams } from "next/navigat
 import { BsGlobe2 } from "react-icons/bs"
 import { buildLocaleUrl, toggleLocale } from "@/lib/i18n/locale"
 import type { Locale } from "@/lib/i18n/config"
+import UserQuickPanel from "../quick_panel/UserQuickPanel"
+import { useTranslation } from "@/lib/i18n/i18n-client"
 
 function LanguageSwitcherButton() {
         
@@ -53,18 +54,19 @@ export default function Header() {
     const [open, setOpen] = useState(false)
     const panelRef = useRef<HTMLDivElement>(null)
     const params = useParams() as { locale: string }
+    const { t } = useTranslation()
     const localePrefix = `/${params?.locale ?? "ko"}`
 
     const navLinks = [
-        { href: "/main", label: "Home" },
-        { href: "/main/introduce", label: "Introduce" },
-        { href: "/docs", label: "Document" },
+        { href: "/main", label: t("header.home") },
+        { href: "/main/introduce", label: t("header.introduce") },
+        { href: "/docs", label: t("header.document") },
     ]
 
     const algoLinks = [
-        { href: "/data-functions/new", label: "DataFunction" },
-        { href: "/encrypt/aes", label: "AES" },
-        { href: "/encrypt/rsa", label: "RSA" }
+        { href: "/data-functions/new", label: t("header.link.data_function") },
+        { href: "/encrypt/aes", label: t("header.link.ex1") },
+        { href: "/encrypt/rsa", label: t("header.link.ex2") }
     ]
 
     useEffect(() => {
@@ -93,6 +95,9 @@ export default function Header() {
     }
 
     const Greeting = () => {
+
+        const { t } = useTranslation()
+
         if(status === "loading") return null
         // if(status !== "guest" && status !== "authenticated")  return null
 
@@ -101,7 +106,7 @@ export default function Header() {
             nickname = toGuestNickname(query.data?.user.guestId, query.data?.user.guestIdx)
         }
 
-        const text = `${nickname}님 안녕하세요!`
+        const text = `${nickname}${t("header.welcome")}`
 
         return (
             <div className="relative group min-w-0">
@@ -136,27 +141,26 @@ export default function Header() {
                                 </li>                        
                             ))}
                             <li className="relative">
-                                <Dropdown label="InsertData" items={algoLinks} /> 
+                                <Dropdown label={`${t("header.insert_data")}`} items={algoLinks} /> 
                             </li>
                         </ul>
                     </nav>
                 </div>
-                
-                <LanguageSwitcherButton />
-
-                <div className="hidden md:block h-6 w-px bg-white/20" />
 
                 <div className="ml-auto flex items-center gap-3 md:gap-6 min-w-0">
+                    <div className="shrink-0">
+                        <LanguageSwitcherButton />
+                    </div>
+                    <div className="hidden md:block h-6 w-px bg-white/20 shrink-0" />
                     <div className="min-w-0">
                         <div className="hidden md:block max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
                             <Greeting />
                         </div>
                     </div>
-
-                    <div className="flex-shrink-0">
-                        <GuestLogoutButton redirectToLanding />
+                    <div className="shrink-0">
+                        <UserQuickPanel />
                     </div>
-
+                    
                     <button
                         className="ml-1 inline-flex h-9 w-9 items-center justify-center rounded md:hidden hover:bg-white/10"
                         aria-label="메뉴 열기"

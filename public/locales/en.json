@@ -1,7 +1,19 @@
 {
+    "header": {
+        "home": "Home",
+        "introduce": "Introduce",
+        "document": "Docs",
+        "insert_data": "AddData",
+        "welcome": "! Welcome!",
+        "link": {
+            "data_function": "data_functions",
+            "ex1": "example1",
+            "ex2": "example2"
+        }
+    },
     "home": {
-        "title": ["Code & Data Forge", "Deep Dev Building", "Modeling & Buliding & Implement"],
-        "subtitle": "Data Modeling, Code Build",
+        "title": ["Data Visualization", "Data Processing", "DB Optimization"],
+        "subtitle": "Data at glance, DB made lightweight",
         "button": {
             "start": "Get Started",
             "loading": "Loading..."
@@ -9,6 +21,35 @@
         "lang": {
             "toKo": "KOR",
             "toEn": "ENG"
+        }
+    },
+    "data_functions": {
+        "new": {
+            "title": "Add New Data",
+            "slug": "Slug *",
+            "slug_placeholder": "[Unique] slug",
+            "card_title": "Title *",
+            "card_title_placeholder": "Card title",
+            "description": "Description",
+            "description_placeholder": "description",
+            "external_link": "External Link",
+            "activate": "Activate",
+            "path": "Path (Internal)",
+            "path_placeholder": "ex) /data/example",
+            "external_url": "External URL",
+            "external_url_placeholder": "ex) https://example.com",
+            "path_noentry": "If not inputted /data/:slug apply",
+            "variant": "Graph Variant",
+            "tag_tone": "Tag tone",
+            "visibility": "Visibility",
+            "tag": "Tag",
+            "category": "Category",
+            "icon_key": "Icon key",
+            "order_priority": "Order priority",
+            "metadata": "Metadata (JSON)",
+            "metadata_placeholder": "ex) {\"key\": \"value\"}",
+            "save": "Save",
+            "cancel": "Cancel"
         }
     }
 }
