@@ -1,0 +1,136 @@
+"use client"
+
+import { useEffect, useRef, useState } from "react"
+import { AnimatePresence, motion } from "framer-motion"
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation"
+import { LuUser, LuSettings, LuLogOut } from "react-icons/lu"
+import GuestLogoutButton from "@/components/mainpage/auth/GuestLogoutButton"
+import LocaleLink from "../common/i18n/LocaleLink"
+import { LucideUserCircle2 } from "lucide-react"
+
+export default function UserQuickPanel() {
+
+    const [open, setOpen] = useState(false)
+    const panelRef = useRef<HTMLDivElement | null>(null)
+    const firstFocusRef = useRef<HTMLButtonElement | null>(null)
+
+    const router = useRouter()
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
+    const { locale } = useParams() as { locale?: string }
+    const prefix = `/${locale ?? "ko"}`
+
+    useEffect(() => {
+        const onKeyDown = (e: KeyboardEvent) => {
+            if(e.key === "Escape") setOpen(false)
+        }
+        document.addEventListener("keydown", onKeyDown)
+
+        return () => document.removeEventListener("keydown", onKeyDown)
+    }, [])
+
+    useEffect(() => {
+        if(!open) return
+
+        const prev = document.body.style.overflow
+        document.body.style.overflow = "hidden"
+
+        firstFocusRef.current?.focus()
+
+        return () => {
+            document.body.style.overflow = prev
+        }
+    }, [open])
+
+    const handleOverlayDown: React.MouseEventHandler<HTMLDivElement> = (e) => {
+        if(!panelRef.current) return
+        if(!panelRef.current.contains(e.target as Node)) setOpen(false)
+    }
+
+    return (
+        <>
+            <button
+                type="button"
+                aria-haspopup="dialog"
+                aria-expanded={open}
+                onClick={() => setOpen((set) => !set)}
+                className="inline-flex items-center gap-2 h-9 px-3 rounded-lg
+                        bg-white/10 hover:bg-white/15 active:scale-95
+                        border border-white/15 text-white text-sm font-medium
+                        focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+            >
+                <LucideUserCircle2 className="text-blue-300 text-lg" />
+                <span className="hidden sm:inline">계정</span>
+            </button>
+
+            <AnimatePresence>
+                {open && (
+                    <motion.div
+                        className="fixed inset-0 z-[70]"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onMouseDown={handleOverlayDown}
+                    >
+                        <div className="absoulte inset-0 bg-black/30" />
+
+                        <motion.aside
+                            ref={panelRef}
+                            role="dialog"
+                            aria-model="true"
+                            className="absolute right-3 top-3 bottom-3 w-[320px] max-w-[92vw]
+                                    rounded-2xl border border-white/10 bg-zinc-950/95 backdrop-blur
+                                    shadow-2xl overflow-hidden"
+                            initial={{ x: 24, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: 24, opacity: 0 }}
+                            transition={{ type: "spring", stiffness: 280, damping: 26 }}
+                        >
+                            <div className="flex items-center justify-between px-4 h-12 border-b border-white/10">
+                                <span className="text-sm font-semibold text-white/90">빠른 메뉴</span>
+                                <button
+                                    onClick={() => setOpen(false)}
+                                    aria-label="닫기"
+                                    className="rounded p-2 hover:bg-white/10"
+                                    ref={firstFocusRef}
+                                >
+                                    <span className="block h-0.5 w-5 rotate-45 bg-white origin-center translate-y-[2px]" />
+                                    <span className="block h-0.5 w-5 -rotate-45 bg-white origin-center -translate-y-[2px]" />
+                                </button>
+                            </div>
+
+                            <div className="p-2">
+                                <ul className="space-y-1">
+                                    <li>
+                                        <LocaleLink
+                                            href="/account"
+                                            className="flex items-center gap-2 rounded px-3 py-2 text-sm text-zinc-200 hover:bg-white/10"
+                                            onClick={() => setOpen(false)}
+                                        >
+                                            <LuUser /> 마이페이지
+                                        </LocaleLink>
+                                    </li>
+                                    <li>                                    
+                                        <LocaleLink
+                                            href="/settings"
+                                            className="flex items-center gap-2 rounded px-3 py-2 text-sm text-zinc-200 hover:bg-white/10"
+                                            onClick={() => setOpen(false)}
+                                        >
+                                            <LuSettings /> 설정
+                                        </LocaleLink>
+                                    </li>
+                                    <li className="border-t border-white/10 my-2" />
+                                    <li className="px-2">
+                                        <GuestLogoutButton redirectToLanding />
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </motion.aside>
+
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </>
+    )
+} 

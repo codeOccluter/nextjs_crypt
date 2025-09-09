@@ -1,30 +1,72 @@
 "use client"
 
 import "@/styles/components/layout/header.css"
-import Link from "next/link"
+import LocaleLink from "../common/i18n/LocaleLink"
 import Dropdown from "../common/Dropdown"
-import GuestLogoutButton from "../../mainpage/auth/GuestLogoutButton"
 import useSessionQuery from "../../../hooks/auth/useSessionQuery"
 import { toGuestNickname } from "@/features/auth/guest/guest.formatter"
 import { useEffect, useRef, useState } from "react"
 import clsx from "clsx"
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation"
+import { BsGlobe2 } from "react-icons/bs"
+import { buildLocaleUrl, toggleLocale } from "@/lib/i18n/locale"
+import type { Locale } from "@/lib/i18n/config"
+import UserQuickPanel from "../quick_panel/UserQuickPanel"
+import { useTranslation } from "@/lib/i18n/i18n-client"
+
+function LanguageSwitcherButton() {
+        
+    const router = useRouter()
+    const params = useParams() as { locale: string }
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
+
+    const current = (params?.locale ?? "ko") as Locale
+    const next = toggleLocale(current)
+    const label = current === "en" ? "KOR" : "ENG"
+
+    const handleClick = () => {
+        
+        const nextUrl = buildLocaleUrl(pathname ?? "/", searchParams, next)
+        router.replace(nextUrl)
+    }
+
+    return (
+        <button
+            onClick={handleClick}
+            className="
+                    inline-flex items-center gap-2 h-9 px-3 rounded-lg
+                    bg-white/10 hover:bg-white/15 active:scale-95
+                    border border-white/15 text-white text-sm font-medium
+                    focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+            aria-label={`Switch language to ${next}`}
+        >
+            <BsGlobe2 className="text-blue-300" />
+            <span className="hidden sm:inline-block">{label}</span>
+            <span className="sm:hidden">{current.toUpperCase()}</span>
+        </button>
+    )
+}
 
 export default function Header() {
 
     const { status, query } = useSessionQuery()
     const [open, setOpen] = useState(false)
     const panelRef = useRef<HTMLDivElement>(null)
+    const params = useParams() as { locale: string }
+    const { t } = useTranslation()
+    const localePrefix = `/${params?.locale ?? "ko"}`
 
     const navLinks = [
-        { href: "/main", label: "Home" },
-        { href: "/main/introduce", label: "Introduce" },
-        { href: "/docs", label: "Document" },
+        { href: "/main", label: t("header.home") },
+        { href: "/main/introduce", label: t("header.introduce") },
+        { href: "/docs", label: t("header.document") },
     ]
 
     const algoLinks = [
-        { href: "/data-functions/new", label: "DataFunction" },
-        { href: "/encrypt/aes", label: "AES" },
-        { href: "/encrypt/rsa", label: "RSA" }
+        { href: "/data-functions/new", label: t("header.link.data_function") },
+        { href: "/encrypt/aes", label: t("header.link.ex1") },
+        { href: "/encrypt/rsa", label: t("header.link.ex2") }
     ]
 
     useEffect(() => {
@@ -53,6 +95,9 @@ export default function Header() {
     }
 
     const Greeting = () => {
+
+        const { t } = useTranslation()
+
         if(status === "loading") return null
         // if(status !== "guest" && status !== "authenticated")  return null
 
@@ -61,7 +106,7 @@ export default function Header() {
             nickname = toGuestNickname(query.data?.user.guestId, query.data?.user.guestIdx)
         }
 
-        const text = `${nickname}님 안녕하세요!`
+        const text = `${nickname}${t("header.welcome")}`
 
         return (
             <div className="relative group min-w-0">
@@ -89,30 +134,33 @@ export default function Header() {
                         <ul className="flex items-center gap-6">
                             {navLinks.map((link) => (
                                 <li key={link.href}>
-                                    <Link
+                                    <LocaleLink
                                         href={link.href}
                                         className="nav-link"
-                                    >{link.label}</Link>
+                                    >{link.label}</LocaleLink>
                                 </li>                        
                             ))}
                             <li className="relative">
-                                <Dropdown label="InsertData" items={algoLinks} /> 
+                                <Dropdown label={`${t("header.insert_data")}`} items={algoLinks} /> 
                             </li>
                         </ul>
                     </nav>
                 </div>
 
                 <div className="ml-auto flex items-center gap-3 md:gap-6 min-w-0">
+                    <div className="shrink-0">
+                        <LanguageSwitcherButton />
+                    </div>
+                    <div className="hidden md:block h-6 w-px bg-white/20 shrink-0" />
                     <div className="min-w-0">
                         <div className="hidden md:block max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
                             <Greeting />
                         </div>
                     </div>
-
-                    <div className="flex-shrink-0">
-                        <GuestLogoutButton redirectToLanding />
+                    <div className="shrink-0">
+                        <UserQuickPanel />
                     </div>
-
+                    
                     <button
                         className="ml-1 inline-flex h-9 w-9 items-center justify-center rounded md:hidden hover:bg-white/10"
                         aria-label="메뉴 열기"
@@ -161,11 +209,11 @@ export default function Header() {
                             <ul className="space-y-1">
                                 {navLinks.map((l) => (
                                     <li key={l.href}>
-                                        <Link
+                                        <LocaleLink
                                             href={l.href}
                                             className="block rounded px-3 py-2 text-sm text-zinc-200 hover:bg-white/10"
                                             onClick={() => setOpen(false)}
-                                        >{l.label}</Link>
+                                        >{l.label}</LocaleLink>
                                     </li>
                                 ))}
 
@@ -176,13 +224,13 @@ export default function Header() {
                                     <ul className="space-y-1">
                                     {algoLinks.map((a) => (
                                         <li key={a.href}>
-                                        <Link
+                                        <LocaleLink
                                             href={a.href}
                                             className="block rounded px-3 py-2 text-sm text-zinc-200 hover:bg-white/10"
                                             onClick={() => setOpen(false)}
                                         >
                                             {a.label}
-                                        </Link>
+                                        </LocaleLink>
                                         </li>
                                     ))}
                                     </ul>

@@ -10,6 +10,9 @@ import { FaSpinner } from "react-icons/fa"
 import { BsGlobe2 } from "react-icons/bs"
 import Typewriter from "@/components/ui/common/typewriter/Typewriter"
 
+import { buildLocaleUrl, toggleLocale } from "@/lib/i18n/locale"
+import { type Locale } from "@/lib/i18n/config"
+
 export default function LandingPageClient({ locale }: { locale: string }) {
 
   	const [isLeaving, setIsLeaving] = useState(false)
@@ -34,27 +37,13 @@ export default function LandingPageClient({ locale }: { locale: string }) {
         }, 1500)
    }
 
-   const toggleLocale = locale == "en" ? "ko" : "en"
-   const langLabel = locale == "en" ? t("home.lang.toKo") : t("home.lang.toEn")
+    const langLabel = locale == "en" ? t("home.lang.toKo") : t("home.lang.toEn")
+    const nextLocale = toggleLocale(locale as Locale)
 
-   const container = {
-        hidden: { opacity: 0 },
-        show: { opacity: 1, transition: { straggerChildren: 0.12 } }
-   }
-
-   const item = {
-        hidden: { opacity: 0, y: 12 },
-        show: { opactity: 1, y: 0, transition: { duration: 0.25 } }
-   }
-
-   const handleToggleLocale = () => {
-
-        const base = pathname?.replace(/^\/(ko|en)/, `/${toggleLocale}`) ?? `/${toggleLocale}`
-        const qs = searchParams?.toString()
-        const nextUrl = qs ? `${base}?${qs}` : base
-
+    const handleToggleLocale = () => {
+        const nextUrl = buildLocaleUrl(pathname ?? "/", searchParams, nextLocale)
         router.replace(nextUrl)
-   }
+    }
 
   	return (
 		<AnimatePresence>

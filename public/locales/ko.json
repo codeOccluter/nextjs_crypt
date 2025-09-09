@@ -1,7 +1,19 @@
 {
+    "header": {
+        "home": "홈",
+        "introduce": "소개",
+        "document": "문서",
+        "insert_data": "데이터 추가",
+        "welcome": "님! 안녕하세요!",
+        "link": {
+            "data_function": "데이터 함수",
+            "ex1": "예제1",
+            "ex2": "예제2"
+        }
+    },
     "home": {
-        "title": ["Code & Data Forge", "Deep Dev Building", "Modeling & Buliding & Implement"],
-        "subtitle": "데이터 모델링, 코드 작업",
+        "title": ["데이터 시각화", "데이터 가공", "데이터베이스 최적화"],
+        "subtitle": "데이터는 한 눈에, DB는 가볍게",
         "button": {
             "start": "시작하기",
             "loading": "이동 중..."
@@ -9,6 +21,35 @@
         "lang": {
             "toKo": "KOR",
             "toEn": "ENG"
+        }
+    },
+    "data_functions": {
+        "new": {
+            "title": "새 데이터 추가",
+            "slug": "Slug *",
+            "slug_placeholder": "[고유값] slug",
+            "card_title": "Title *",
+            "card_title_placeholder": "카드 이름",
+            "description": "Description",
+            "description_placeholder": "설명",
+            "external_link": "외부 링크",
+            "activate": "활성화",
+            "path": "경로 (내부)",
+            "path_placeholder": "ex) /data/example",
+            "external_url": "외부 URL",
+            "external_url_placeholder": "ex) https://example.com",
+            "path_noentry": "미입력 시 /data/:slug 적용",
+            "variant": "그래프 형태",
+            "tag_tone": "태그 색상",
+            "visibility": "공개 범위",
+            "tag": "태그",
+            "category": "카테고리",
+            "icon_key": "아이콘 키",
+            "order_priority": "우선 순위",
+            "metadata": "메타데이터 (JSON)",
+            "metadata_placeholder": "ex) {\"key\": \"value\"}",
+            "save": "저장",
+            "cancel": "취소"
         }
     }
 }
