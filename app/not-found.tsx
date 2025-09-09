@@ -9,7 +9,7 @@ export default function NotFound() {
                 title = "Beta Zone"
                 message = "여기는 아직 코드를 짜는 중입니다... 나중에 다시 와주세요 :)"
                 showHomeButton = {true}
-                href="/"
+                href="/main"
                 backPage="홈으로 돌아가기"
             />
 }

@@ -16,7 +16,7 @@ export default function Header() {
     const panelRef = useRef<HTMLDivElement>(null)
 
     const navLinks = [
-        { href: "/", label: "Home" },
+        { href: "/main", label: "Home" },
         { href: "/main/introduce", label: "Introduce" },
         { href: "/docs", label: "Document" },
     ]
