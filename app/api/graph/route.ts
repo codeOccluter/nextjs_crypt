@@ -13,9 +13,9 @@ export async function GET(req: NextRequest) {
     const limit = Math.min(Number(searchParams.get("limit") || 20 ), 100)
     const skip = (page - 1) * limit
 
-    const DataFunctionRepository = ClientSQL.getRepository(Entities.DataFunction)
+    const GraphRepository = ClientSQL.getRepository(Entities.Graph)
 
-    const [rows, total] = await DataFunctionRepository.findAndCount({
+    const [rows, total] = await GraphRepository.findAndCount({
         where: { is_active: 1 },
         order: { order_priority: "ASC", title: "ASC" },
         skip,

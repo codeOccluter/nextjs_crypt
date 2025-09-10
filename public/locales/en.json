@@ -1,15 +1,35 @@
 {
     "header": {
+        "logo": "Data Labs",
         "home": "Home",
         "introduce": "Introduce",
         "document": "Docs",
-        "insert_data": "AddData",
+        "insert_data": "➕Data",
         "welcome": "! Welcome!",
         "link": {
-            "data_function": "data_functions",
+            "graph": "Graph",
             "ex1": "example1",
             "ex2": "example2"
         }
+    },
+    "footer": {
+        "logo": "Data Labs",
+        "title": "The Data Lab",
+        "footer_nav": {
+            "home": "Home",
+            "introduce": "Introduce",
+            "document": "Docs",
+            "contact": "Contact",
+            "developer": "Developer"
+        },
+        "copyrighter": "© Data Labs — All rights reserved."
+    },
+    "user_quick_panel": {
+        "account": "Account",
+        "quick_menu": "Quick Menu",
+        "close": "Close",
+        "mypage": "MyPage",
+        "setting": "Setting"
     },
     "home": {
         "title": ["Data Visualization", "Data Processing", "DB Optimization"],
@@ -23,9 +43,58 @@
             "toEn": "ENG"
         }
     },
-    "data_functions": {
+    "login_modal": {
+        "signin": "Sign In",
+        "processing": "processing...",
+        "tap": {
+            "login": "Login",
+            "signup": "Sign Up",
+            "guest": "Guest"
+        },
+        "email": {
+            "email": "Email",
+            "email_placeholder": "email@example.com",
+            "pw": "Password",
+            "pw_placeholder": "*************",
+            "email_login": "login"
+        },
+        "signup": {
+            "name": "Name",
+            "birth": "Birth",
+            "birth_placeholder": "YYYYMMDD",
+            "phone": "Phone Number",
+            "phone_placeholder": "010-1234-5678",
+            "email": "Email",
+            "pw": "Password",
+            "main_language": "Main Program Language",
+            "ml_placeholder": "JavaScript, Java ...",
+            "join": "Join",
+            "profile_notify": "You can change your profile picture in My Page after signing up."
+        },
+        "guest": {
+            "guest_notify": "Guest mode is provided for trial use. Some features (profile, data saving, etc.) may be limited.",
+            "nickname": "Nickname",
+            "nickname_option": "(Option)",
+            "nickname_placeholder": "2–8 characters (a temporary nickname will be assigned if left blank)",
+            "nickame_warn": "Please enter a nickname between 2 and 8 characters.",
+            "guest_agree": "I have read and agree to the guest usage notice.",
+            "guest_session_notify": "Your data may be deleted when the session expires."
+        }
+    },
+    "guest_logout": {
+        "is_loading": "logging out...",
+        "guest_logout": "Guest Logout",
+        "logout": "Logout",
+        "is_loading_confirm": "logging out... Please wait",
+        "logout_confirm": "Are you sure you want to logout as a guest?",
+        "yes": "Yes",
+        "no": "No",
+        "processing": "processing...",
+        "no_cancel": "Not Cancel"
+    },
+    "graphs": {
         "new": {
-            "title": "Add New Data",
+            "title": "Add New Graph",
             "slug": "Slug *",
             "slug_placeholder": "[Unique] slug",
             "card_title": "Title *",
@@ -50,6 +119,12 @@
             "metadata_placeholder": "ex) {\"key\": \"value\"}",
             "save": "Save",
             "cancel": "Cancel"
+        }
+    },
+    "main": {
+        "graph_grid": {
+            "get_data_error": "An error occurred while loading data.",
+            "no_more_data": "No more items available."
         }
     }
 }

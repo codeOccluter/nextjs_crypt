@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
-import { DataFunctionDefines } from "@/features/data-functions/new/new.constants"
+import { GraphDefines } from "@/features/graph/new/new.constants"
 import { ensureClientDBReady, ClientSQL } from "@/server/model/client-db"
 import { Entities } from "@/server/model/client-db"
 import { getTranslations } from "@/lib/i18n/i18n-server"
@@ -50,29 +50,29 @@ function normalization<T extends readonly string[]> (
     return (allowed as readonly string[]).includes(s) ? (s as T[number]) : fallback
 }
 
-async function createDataFunction(formData: FormData) {
+async function createGraph(formData: FormData) {
     "use server"
 
     await ensureClientDBReady()
-    const dataFunctionRepo = ClientSQL.getRepository(Entities.DataFunction)
+    const GraphRepo = ClientSQL.getRepository(Entities.Graph)
 
     const slug = (formData.get("slug") ?? "").toString().trim()
     const title = (formData.get("title") ?? "").toString().trim()
-    if(!slug || !title) redirect(`/data-functions/new?error=required`)
+    if(!slug || !title) redirect(`/graph/new?error=required`)
 
     const variant = normalization(
         formData.get("variant"),
-        DataFunctionDefines.DATA_FUNCTION.variants,
-        "default"
+        GraphDefines.GRAPH.variants,
+        "Bar"
     )
     const tag_tone = normalization(
         formData.get("tag_tone"),
-        DataFunctionDefines.DATA_FUNCTION.tagTones,
+        GraphDefines.GRAPH.tagTones,
         "blue"
     )
     const visibility = normalization(
         formData.get("visibility"),
-        DataFunctionDefines.DATA_FUNCTION.visibilities,
+        GraphDefines.GRAPH.visibilities,
         "public"
     )
 
@@ -91,7 +91,7 @@ async function createDataFunction(formData: FormData) {
     const finalPath = is_external ? null : (path ?? `/data/${slug}`)
 
     try {
-        await dataFunctionRepo.insert({
+        await GraphRepo.insert({
             slug,
             title,
             description,
@@ -109,42 +109,42 @@ async function createDataFunction(formData: FormData) {
             metadata
         })
     }catch(err: any) {
-        if(err?.code === "ER_DUP_ENTRY") redirect(`/data-function/new?error=duplicate`)
+        if(err?.code === "ER_DUP_ENTRY") redirect(`/graph/new?error=duplicate`)
         
-        redirect(`/data-function/new?error=unknown`)
+        redirect(`/graph/new?error=unknown`)
     }
 
     revalidatePath("/main")
     redirect("/main")
 }
 
-export default function NewDataFunctionPage({ locale }: { locale: "ko" | "en" }) {
+export default function NewGraphPage({ locale }: { locale: "ko" | "en" }) {
 
     const { t } = getTranslations(locale)
 
-    const VARIANTS = DataFunctionDefines.DATA_FUNCTION.variants
-    const TAG_TONES = DataFunctionDefines.DATA_FUNCTION.tagTones
-    const VISIBILITIES = DataFunctionDefines.DATA_FUNCTION.visibilities
+    const VARIANTS = GraphDefines.GRAPH.variants
+    const TAG_TONES = GraphDefines.GRAPH.tagTones
+    const VISIBILITIES = GraphDefines.GRAPH.visibilities
 
     return (
         <div className="max-w-3xl mx-auto px-4 py-8">
-            <h1 className="text-2xl font-bold mb-6">{`${t("data_functions.new.title")}`}</h1>
+            <h1 className="text-2xl font-bold mb-6">{`${t("graphs.new.title")}`}</h1>
 
-            <form action={createDataFunction} className="space-y-6">
+            <form action={createGraph} className="space-y-6">
                 <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <label className="flex flex-col gap-1">
                         <span className="text-sm font-medium">Slug *</span>
-                        <input name="slug" required placeholder={`${t("data_functions.new.slug_placeholder")}`}
+                        <input name="slug" required placeholder={`${t("graphs.new.slug_placeholder")}`}
                         className="border rounded-md px-3 py-2 bg-white dark:bg-slate-900" />
                     </label>
                     <label className="flex flex-col gap-1">
-                        <span className="text-sm font-medium">{`${t("data_functions.new.card_title")}`}</span>
-                        <input name="title" required placeholder={`${t("data_functions.new.card_title_placeholder")}`}
+                        <span className="text-sm font-medium">{`${t("graphs.new.card_title")}`}</span>
+                        <input name="title" required placeholder={`${t("graphs.new.card_title_placeholder")}`}
                         className="border rounded-md px-3 py-2 bg-white dark:bg-slate-900" />
                     </label>
                     <label className="md:col-span-2 flex flex-col gap-1">
-                        <span className="text-sm font-medium">{`${t("data_functions.new.description")}`}</span>
-                        <textarea name="description" rows={3} placeholder={`${t("data_functions.new.description_placeholder")}`}
+                        <span className="text-sm font-medium">{`${t("graphs.new.description")}`}</span>
+                        <textarea name="description" rows={3} placeholder={`${t("graphs.new.description_placeholder")}`}
                         className="border rounded-md px-3 py-2 bg-white dark:bg-slate-900" />
                     </label>
                 </section>
@@ -152,40 +152,40 @@ export default function NewDataFunctionPage({ locale }: { locale: "ko" | "en" })
                 <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <label className="flex items-center gap-2">
                         <input type="checkbox" name="is_external" />
-                        <span className="text-sm">{`${t("data_functions.new.external_link")}`}</span>
+                        <span className="text-sm">{`${t("graphs.new.external_link")}`}</span>
                     </label>
                     <label className="flex items-center gap-2">
                         <input type="checkbox" name="is_active" defaultChecked />
-                        <span className="text-sm">{`${t("data_functions.new.activate")}`}</span>
+                        <span className="text-sm">{`${t("graphs.new.activate")}`}</span>
                     </label>
                     <label className="flex flex-col gap-1">
-                        <span className="text-sm font-medium">{`${t("data_functions.new.path")}`}</span>
-                        <input name="path" placeholder={`${t("data_functions.new.path_placeholder")}`}
+                        <span className="text-sm font-medium">{`${t("graphs.new.path")}`}</span>
+                        <input name="path" placeholder={`${t("graphs.new.path_placeholder")}`}
                         className="border rounded-md px-3 py-2 bg-white dark:bg-slate-900" />
-                        <span className="text-xs text-gray-500">{`${t("data_functions.new.path_noentry")}`}</span>
+                        <span className="text-xs text-gray-500">{`${t("graphs.new.path_noentry")}`}</span>
                     </label>
                     <label className="flex flex-col gap-1">
-                        <span className="text-sm font-medium">{`${t("data_functions.new.external_url")}`}</span>
-                        <input name="external_url" placeholder={`${t("data_functions.new.external_url_placeholder")}`}
+                        <span className="text-sm font-medium">{`${t("graphs.new.external_url")}`}</span>
+                        <input name="external_url" placeholder={`${t("graphs.new.external_url_placeholder")}`}
                         className="border rounded-md px-3 py-2 bg-white dark:bg-slate-900" />
                     </label>
                 </section>
 
                 <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <label className="flex flex-col gap-1">
-                        <span className="text-sm font-medium">{`${t("data_functions.new.variant")}`}</span>
+                        <span className="text-sm font-medium">{`${t("graphs.new.variant")}`}</span>
                         <select name="variant" className="border rounded-md px-3 py-2 bg-white dark:bg-slate-900">
                             {VARIANTS.map(v => <option key={v} value={v}>{v}</option>)}
                         </select>
                     </label>
                     <label className="flex flex-col gap-1">
-                        <span className="text-sm font-medium">{`${t("data_functions.new.tag_tone")}`}</span>
+                        <span className="text-sm font-medium">{`${t("graphs.new.tag_tone")}`}</span>
                         <select name="tag_tone" className="border rounded-md px-3 py-2 bg-white dark:bg-slate-900">
                             {TAG_TONES.map(t => <option key={t} value={t}>{t}</option>)}
                         </select>
                     </label>
                     <label className="flex flex-col gap-1">
-                        <span className="text-sm font-medium">{`${t("data_functions.new.visibility")}`}</span>
+                        <span className="text-sm font-medium">{`${t("graphs.new.visibility")}`}</span>
                         <select name="visibility" className="border rounded-md px-3 py-2 bg-white dark:bg-slate-900">
                             {VISIBILITIES.map(v => <option key={v} value={v}>{v}</option>)}
                         </select>
@@ -194,17 +194,17 @@ export default function NewDataFunctionPage({ locale }: { locale: "ko" | "en" })
 
                 <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <label className="flex flex-col gap-1">
-                        <span className="text-sm font-medium">{`${t("data_functions.new.tag")}`}</span>
+                        <span className="text-sm font-medium">{`${t("graphs.new.tag")}`}</span>
                         <input name="tag" placeholder="e.g. new"
                         className="border rounded-md px-3 py-2 bg-white dark:bg-slate-900" />
                     </label>
                     <label className="flex flex-col gap-1">
-                        <span className="text-sm font-medium">{`${t("data_functions.new.category")}`}</span>
+                        <span className="text-sm font-medium">{`${t("graphs.new.category")}`}</span>
                         <input name="category" placeholder="e.g. tools"
                         className="border rounded-md px-3 py-2 bg-white dark:bg-slate-900" />
                     </label>
                     <label className="flex flex-col gap-1">
-                        <span className="text-sm font-medium">{`${t("data_functions.new.icon_key")}`}</span>
+                        <span className="text-sm font-medium">{`${t("graphs.new.icon_key")}`}</span>
                         <input name="icon_key" placeholder="e.g. chart-bar"
                         className="border rounded-md px-3 py-2 bg-white dark:bg-slate-900" />
                     </label>
@@ -212,22 +212,22 @@ export default function NewDataFunctionPage({ locale }: { locale: "ko" | "en" })
 
                 <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <label className="flex flex-col gap-1">
-                        <span className="text-sm font-medium">{`${t("data_functions.new.order_priority")}`}</span>
+                        <span className="text-sm font-medium">{`${t("graphs.new.order_priority")}`}</span>
                         <input name="order_priority" type="number" defaultValue={100}
                         className="border rounded-md px-3 py-2 bg-white dark:bg-slate-900" />
                     </label>
                     <label className="flex flex-col gap-1">
-                        <span className="text-sm font-medium">{`${t("data_functions.new.metadata")}`}</span>
-                        <textarea name="metadata" rows={4} placeholder={`${t("data_functions.new.metadata_placeholder")}`}
+                        <span className="text-sm font-medium">{`${t("graphs.new.metadata")}`}</span>
+                        <textarea name="metadata" rows={4} placeholder={`${t("graphs.new.metadata_placeholder")}`}
                         className="border rounded-md px-3 py-2 bg-white dark:bg-slate-900" />
                     </label>
                 </section>
 
                 <div className="flex items-center gap-3">
                     <button type="submit" className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">
-                        {`${t("data_functions.new.save")}`}
+                        {`${t("graphs.new.save")}`}
                     </button>
-                    <a href="/main" className="text-sm text-gray-600 hover:underline">{`${t("data_functions.new.cancel")}`}</a>
+                    <a href="/main" className="text-sm text-gray-600 hover:underline">{`${t("graphs.new.cancel")}`}</a>
                 </div>
             </form>
         </div>

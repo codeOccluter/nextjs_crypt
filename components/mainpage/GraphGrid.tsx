@@ -4,7 +4,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import Card from "../ui/common/card/Card"
 import { mapRowsToCards } from "@/features/main/main.mapper"
 import axiosClient from "@/lib/axios/axiosClient"
-import { type DataFunctionRow } from "@/features/data-functions/new/new.types"
+import { type GraphRow } from "@/features/graph/new/new.types"
+import { useTranslation } from "@/lib/i18n/i18n-client"
 
 type ApiResponse<T> = {
     data: T[]
@@ -15,9 +16,9 @@ type ApiResponse<T> = {
     nextPage: number | null
 }
 
-export default function DataFunctionGrid() {
+export default function GraphGrid() {
 
-    const [items, setItems] = useState<DataFunctionRow[]>([])
+    const [items, setItems] = useState<GraphRow[]>([])
     const [page, setPage] = useState(1)
     const [hasMore, setHasMore] = useState(true)
     const [loading, setLoading] = useState(false)
@@ -27,6 +28,7 @@ export default function DataFunctionGrid() {
     const inFlightRef = useRef(false)
     const requestedPagesRef = useRef<Set<number>>(new Set())
     const didInitRef = useRef(false)
+    const { t } = useTranslation()
 
     const fetchPage = useCallback(
         async (page: number) => {
@@ -40,8 +42,8 @@ export default function DataFunctionGrid() {
             setError(null)
 
             try {
-                const response = await axiosClient.get<ApiResponse<DataFunctionRow>>(
-                    `/api/data-functions`,
+                const response = await axiosClient.get<ApiResponse<GraphRow>>(
+                    `/api/graph`,
                     { params: { page: page, limit: 16 } }
                 )
                 // if(response.status !== 200) {
@@ -107,13 +109,13 @@ export default function DataFunctionGrid() {
 
                 {error && (
                     <p className="mt-4 text-sm text-red-600">
-                        데이터를 불러오는 중 문제가 발생했습니다: {error}
+                       {`${t("main.graph_grind.get_data_error")}`} {error}
                     </p>
                 )}
                 <div ref={sentinelRef} className="h-10" />
                 {!hasMore && !loading && (
                     <p className="mt-6 text-center text-sm text-gray-500">
-                        더 이상 항목이 없습니다.
+                        {`${t("main.graph_grid.no_more_data")}`}
                     </p>
                 )}
             </div>

@@ -36,11 +36,6 @@ export async function ensureClientDBReady() {
         ;(ClientSQL.options as any).entities = EntityList
         await ClientSQL.initialize()
     }
-    // if(!ClientSQL.hasMetadata(Entities.GuestUser)) {
-    //     await ClientSQL.destroy();
-    //     (ClientSQL.options as any).entities = EntityList
-    //     await ClientSQL.initialize()
-    // }
 }
 
 export { Entities }

@@ -1,8 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { DataFunctionDefines, type Variant } from "@/features/data-functions/new/new.constants"
-import { CardProps } from "@/features/data-functions/new/new.types"
+import { GraphDefines, type Variant } from "@/features/graph/new/new.constants"
+import { CardProps } from "@/features/graph/new/new.types"
 import ArrowIcon from "../Icons/ArrowIcons"
 
 export default function Card({
@@ -12,7 +12,7 @@ export default function Card({
     icon,
     tag,
     tagTone = "blue",
-    variant = "default",
+    variant = "Bar",
     external = false,
     disabled = false,
     prefetch = true,
@@ -21,16 +21,16 @@ export default function Card({
 }: CardProps) {
 
     const cardClass = [
-        DataFunctionDefines.STYLES.cn.BASE,
-        DataFunctionDefines.STYLES.cn.FOCUS,
-        DataFunctionDefines.STYLES.variants[variant],
-        disabled ? DataFunctionDefines.STYLES.cn.DISABLED : "",
+        GraphDefines.STYLES.cn.BASE,
+        GraphDefines.STYLES.cn.FOCUS,
+        GraphDefines.STYLES.variants[variant],
+        disabled ? GraphDefines.STYLES.cn.DISABLED : "",
         className ?? "",
     ].join(" ")
 
     const tagClass = [
         "absolute top-4 right-4 rounded-full text-xs px-2 py-1 shadow-sm",
-        DataFunctionDefines.STYLES.tagTone[tagTone],
+        GraphDefines.STYLES.tagTone[tagTone],
     ].join(" ")
 
     const content = (
@@ -84,8 +84,8 @@ export default function Card({
 
 export function CardSkeleton({ variant = "default" as Variant }) {
     const skeletonClass = [
-        DataFunctionDefines.STYLES.cn.BASE,
-        DataFunctionDefines.STYLES.variants[variant],
+        GraphDefines.STYLES.cn.BASE,
+        GraphDefines.STYLES.variants[variant],
         "animate-pulse",
     ].join(" ")
 

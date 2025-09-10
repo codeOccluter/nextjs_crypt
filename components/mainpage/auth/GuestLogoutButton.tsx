@@ -8,6 +8,7 @@ import { useRouter, usePathname } from "next/navigation"
 import { useState } from "react"
 import ConfirmModal from "@/components/ui/common/ConfirmModal"
 import axiosClient from "@/lib/axios/axiosClient"
+import { useTranslation } from "@/lib/i18n/i18n-client"
 
 export default function GuestLogoutButton({
     redirectToLanding = false
@@ -21,6 +22,7 @@ export default function GuestLogoutButton({
     
     const [confirmOpen, setConfirmOpen] = useState(false)
     const [processing, setProcessing] = useState(false)
+    const { t } = useTranslation()
 
     if(status !== "guest") return null
 
@@ -59,7 +61,7 @@ export default function GuestLogoutButton({
         <>
             <FullscreenLoader 
                 open={processing}
-                text="로그아웃 중..."
+                text={`${t("guest_logout.is_loading")}`}
             />
             <button
                 onClick={startLogout}
@@ -71,25 +73,25 @@ export default function GuestLogoutButton({
                             hover:border-rose-400 hover:shadow-rose-300 hover:-translate-y-[0.5px]
                             active:translate-y-0
                             flex-shrink-0"                            
-                aria-label="Guest Logout"
+                aria-label={`${t("guest_logout.guest_logout")}`}
             >
                 <LogOut size={16} className="text-zinc-700 translate-y-[0.5px]" />
-                <span className="leading-8">로그아웃</span>
+                <span className="leading-8">{`${t("guest_logout.logout")}`}</span>
             </button>
 
             <ConfirmModal
                 open={confirmOpen}
-                title="게스트 로그아웃"
+                title={`${t("guest_logout.guest_logout")}`}
                 description={
                     processing ? (
                         <span className="inline-flex items-center gap-2">                
-                            <span>로그아웃 중... 잠시만 기다려주세요.</span>
+                            <span>{`${t("guest_logout.is_loading_confirm")}`}</span>
                         </span>
                     ) :
-                    "게스트 로그아웃을 하시겠습니까?"
+                    t("guest_logout.logout_confirm")
                 }
-                confirmText={processing ? "처리 중..." : "예"}
-                cancelText={processing ? "취소 불가" : "아니오"}
+                confirmText={processing ? `${t("guest_logout.processing")}` : `${t("guest_logout.yes")}`}
+                cancelText={processing ? `${t("guest_logout.no_cancel")}` : `${t("guest_logout.no")}`}
                 confirmDisabled={processing}
                 onCancel={handleCancel}
                 onConfirm={handleConfirm}

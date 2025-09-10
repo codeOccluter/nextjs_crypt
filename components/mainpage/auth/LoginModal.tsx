@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 import { Loader2 } from "lucide-react"
+import { useTranslation } from "@/lib/i18n/i18n-client"
 
 type LoginModalProps = {
     open: boolean
@@ -26,11 +27,12 @@ export default function LoginModal({
     primaryDisabled,
     pending,
     onSubmit,
-    buttonLabel = "로그인",
     backgroundImageUrl = "",
     gradientClassName = "from-sky-500/40 via-fuchsia-500/30 to-rose-500/40",
     children
 }: LoginModalProps) {
+
+    const { t } = useTranslation()
 
     useEffect(() => {
         if(!open) return
@@ -93,7 +95,7 @@ export default function LoginModal({
                                 `}
                     >
                         {pending && <Loader2 size={16} className="mr-2 animate-spin" />}
-                        {pending ? "처리 중..." : primaryLabel}
+                        {pending ? t("login_modal.processing") : primaryLabel}
                     </button>
                 </div>
                 <div className="pointer-events-none absolute -inset-x-6 bottom-2 -z-10 h-10 rounded-[28px] bg-black/40 blur-xl" />

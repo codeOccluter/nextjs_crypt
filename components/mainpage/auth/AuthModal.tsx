@@ -5,6 +5,7 @@ import LoginModal from "@/components/mainpage/auth/LoginModal"
 import LoginForm from "./EnterForm/LoginForm"
 import RegisterForm from "./EnterForm/RegisterForm"
 import GuestPanel from "./EnterForm/GuestPanel"
+import { useTranslation } from "@/lib/i18n/i18n-client"
 
 type Props = {
     open: boolean
@@ -27,12 +28,12 @@ type Props = {
       }) => Promise<void> | void
 }
 
-const tabs = [
-    { key: "login", label: "로그인" },
-    { key: "register", label: "회원가입" },
-    { key: "guest", label: "게스트" }
-] as const
-type TabKey = typeof tabs[number]["key"]
+// const tabs = [
+//     { key: "login", label: "로그인" },
+//     { key: "register", label: "회원가입" },
+//     { key: "guest", label: "게스트" }
+// ] as const
+// type TabKey = typeof tabs[number]["key"]
 
 export default function AuthModal({ open, pending, onEmailLogin, onRegister, onGuestLogin }: Props) {
 
@@ -40,8 +41,16 @@ export default function AuthModal({ open, pending, onEmailLogin, onRegister, onG
     const [validLogin, setValidLogin] = useState(false)
     const [validRegister, setValidRegister] = useState(false)
     const [validGuest, setValidGuest] = useState(true)
+    const { t } = useTranslation()
 
-    const primaryLabel = tab === "login" ? "로그인" : tab === "register" ? "가입하기" : "게스트로 시작"
+    const tabs = [
+        { key: "login", label: t("login_modal.tap.login") },
+        { key: "register", label: t("login_modal.tap.signup") },
+        { key: "guest", label: t("login_modal.tap.guest") }
+    ] as const
+    type TabKey = typeof tabs[number]["key"]
+
+    const primaryLabel = tab === "login" ? t("login_modal.tap.login") : tab === "register" ? t("login_modal.tap.signup") : t("login_modal.tap.guest")
 
     const primaryDisabled = 
         pending ||
@@ -58,7 +67,7 @@ export default function AuthModal({ open, pending, onEmailLogin, onRegister, onG
     return (
         <LoginModal 
             open={open} 
-            title="이메일로 시작하기"
+            title={`${t("login_modal.signin")}`}
             primaryLabel={primaryLabel}
             onPrimary={handlePrimary}
             primaryDisabled={primaryDisabled}

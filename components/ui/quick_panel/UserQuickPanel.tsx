@@ -7,6 +7,7 @@ import { LuUser, LuSettings, LuLogOut } from "react-icons/lu"
 import GuestLogoutButton from "@/components/mainpage/auth/GuestLogoutButton"
 import LocaleLink from "../common/i18n/LocaleLink"
 import { LucideUserCircle2 } from "lucide-react"
+import { useTranslation } from "@/lib/i18n/i18n-client"
 
 export default function UserQuickPanel() {
 
@@ -19,6 +20,7 @@ export default function UserQuickPanel() {
     const searchParams = useSearchParams()
     const { locale } = useParams() as { locale?: string }
     const prefix = `/${locale ?? "ko"}`
+    const { t } = useTranslation()
 
     useEffect(() => {
         const onKeyDown = (e: KeyboardEvent) => {
@@ -60,7 +62,7 @@ export default function UserQuickPanel() {
                         focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
             >
                 <LucideUserCircle2 className="text-blue-300 text-lg" />
-                <span className="hidden sm:inline">계정</span>
+                <span className="hidden sm:inline">{`${t("user_quick_panel.account")}`}</span>
             </button>
 
             <AnimatePresence>
@@ -87,10 +89,10 @@ export default function UserQuickPanel() {
                             transition={{ type: "spring", stiffness: 280, damping: 26 }}
                         >
                             <div className="flex items-center justify-between px-4 h-12 border-b border-white/10">
-                                <span className="text-sm font-semibold text-white/90">빠른 메뉴</span>
+                                <span className="text-sm font-semibold text-white/90">{`${t("user_quick_panel.quick_menu")}`}</span>
                                 <button
                                     onClick={() => setOpen(false)}
-                                    aria-label="닫기"
+                                    aria-label={`${t("user_quick_panel.close")}`}
                                     className="rounded p-2 hover:bg-white/10"
                                     ref={firstFocusRef}
                                 >
@@ -107,7 +109,7 @@ export default function UserQuickPanel() {
                                             className="flex items-center gap-2 rounded px-3 py-2 text-sm text-zinc-200 hover:bg-white/10"
                                             onClick={() => setOpen(false)}
                                         >
-                                            <LuUser /> 마이페이지
+                                            <LuUser /> {`${t("user_quick_panel.mypage")}`}
                                         </LocaleLink>
                                     </li>
                                     <li>                                    
@@ -116,7 +118,7 @@ export default function UserQuickPanel() {
                                             className="flex items-center gap-2 rounded px-3 py-2 text-sm text-zinc-200 hover:bg-white/10"
                                             onClick={() => setOpen(false)}
                                         >
-                                            <LuSettings /> 설정
+                                            <LuSettings /> {`${t("user_quick_panel.setting")}`}
                                         </LocaleLink>
                                     </li>
                                     <li className="border-t border-white/10 my-2" />

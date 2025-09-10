@@ -8,10 +8,10 @@ import {
     DeleteDateColumn,
 } from "typeorm"
 
-import { type Variant, type TagTone, type Visibility } from "@/contants/data-function/defines"
+import { type Variant, type TagTone, type Visibility } from "@/features/graph/new/new.constants"
 
-@Entity("data_functions")
-export class DataFunction {
+@Entity("graph")
+export class Graph {
     @PrimaryGeneratedColumn("uuid")
     id!: string
 
@@ -31,7 +31,7 @@ export class DataFunction {
     @Column({ type: "varchar", length: 300, nullable: true })
     external_url?: string | null
 
-    @Column({ type: "varchar", length: 20, default: "default" })
+    @Column({ type: "varchar", length: 20, default: "Bar" })
     variant!: Variant
 
     @Column({ type: "varchar", length: 60, nullable: true })

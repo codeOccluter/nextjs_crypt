@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react"
 import Input from "@/components/ui/common/Input"
+import { useTranslation } from "@/lib/i18n/i18n-client"
 
 type LoginFormProps = {
     onSubmit: (v: {
@@ -18,6 +19,7 @@ export default function LoginForm({
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const { t } = useTranslation()
 
     const valid = useMemo(() => email.trim() !== "" && password.trim() !== "", [email, password])
 
@@ -38,18 +40,18 @@ export default function LoginForm({
             className="space-y-4"
         >
             <Input 
-                label="이메일"
+                label={`${t("login_modal.email.email")}`}
                 type="email"
                 value={email}
                 onChange={setEmail}
-                placeholder="email@example.com"
+                placeholder={`${t("login_modal.email.email_placeholder")}`}
             />
             <Input 
-                label="비밀번호"
+                label={`${t("login_modal.email.pw")}`}
                 type="password"
                 value={password}
                 onChange={setPassword}
-                placeholder="***********"
+                placeholder={`${t("login_modal.email.pw_placeholder")}`}
             />
         </form>
     )

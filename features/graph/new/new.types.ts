@@ -1,6 +1,6 @@
-import type { Variant, TagTone, Visibility } from "../../../features/data-functions/new/new.constants"
+import type { Variant, TagTone, Visibility } from "../../../features/graph/new/new.constants"
 
-export type DataFunctionRow = {
+export type GraphRow = {
     id: string
     slug: string
     title: string
