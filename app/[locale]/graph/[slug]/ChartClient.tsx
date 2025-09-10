@@ -1,0 +1,44 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import axiosClient from "@/lib/axios/axiosClient"
+import type { ChartDefinition } from "@/features/graph/Chart/chart.constant"
+import ChartRenderer from "@/components/ui/common/graph/chart/ChartRenderer"
+
+type ApiResponse = { 
+    def: ChartDefinition
+    data: any[]
+}
+
+export default function ChartClient({ slug }: { slug: string }) {
+
+    const [response, setResponse] = useState<ApiResponse | null>(null)
+    const [loading, setLoading] = useState(true)
+    const [err, setErr] = useState<string | null>(null)
+
+    useEffect(() => {
+        
+        let alive = true
+        setLoading(true)
+        setErr(null)
+        axiosClient.get<ApiResponse>(`/api/graph/${slug}`)
+            .then(result => alive && setResponse(result.data) )
+            .catch(e => alive && setErr(e?.message ?? "load error"))
+            .finally(() => alive && setLoading(false))
+
+        return () => { alive = false }
+    }, [slug])
+
+    if(loading)
+        return <div className="h-64 animate-pulse rounded-lg bg-black/5 dark:bg-white/10" />
+    
+    if(err || !response)
+        return <div className="text-red-600">Load error: {err}</div>
+
+    return (
+        <div className="mx-auto max-w-5xl px-4 py-6">
+            <h1 className="text-2xl font-bold mb-4">{response.def.options?.title ?? response.def.slug}</h1>
+            {/* <ChartRenderer def={response.def} data={response.data} /> */}
+        </div>
+    )
+}
