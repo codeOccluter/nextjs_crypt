@@ -1,30 +1,35 @@
-const DATA_FUNCTION = {
-    variants: ["default", "dashboard", "graph", "compact"] as const,
+
+const GRAPH = {
+    variants: ["Pie", "Bar", "Doughnut", "Line", "Histogram"] as const,
     tagTones: ["blue", "slate", "emerald", "violet", "rose"] as const,
     visibilities: ["public", "guest", "authenticated", "admin"] as const,
 }
 
-export type Variant = (typeof DATA_FUNCTION.variants)[number]
-export type TagTone = (typeof DATA_FUNCTION.tagTones)[number]
-export type Visibility = (typeof DATA_FUNCTION.visibilities)[number]
+export type Variant = (typeof GRAPH.variants)[number]
+export type TagTone = (typeof GRAPH.tagTones)[number]
+export type Visibility = (typeof GRAPH.visibilities)[number]
 
 
 const STYLES = {
     variants: {
-        default:
+        "Pie":
             "p-6 bg-gradient-to-br from-white via-gray-50 to-gray-100 " +
             "dark:from-slate-900 dark:via-slate-900/90 dark:to-slate-900/80 " +
             "border-gray-100 dark:border-slate-800",
-        dashboard:
+        "Bar":
             "p-6 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 " +
             "dark:from-slate-900 dark:via-slate-900/90 dark:to-slate-800 " +
             "border-slate-200/60 dark:border-slate-700",
-        graph:
+        "Doughnut":
             "p-6 bg-gradient-to-br from-indigo-50 via-violet-50 to-fuchsia-50 " +
             "dark:from-indigo-950 dark:via-violet-950 dark:to-fuchsia-950 " +
             "border-violet-100 dark:border-violet-900/50",
-        compact:
+        "Line":
             "p-4 bg-white dark:bg-slate-900 border-gray-100 dark:border-slate-800",
+        "Histogram":
+            "p-6 bg-gradient-to-br from-indigo-50 via-violet-50 to-fuchsia-50 " +
+            "dark:from-indigo-950 dark:via-violet-950 dark:to-fuchsia-950 " +
+            "border-violet-100 dark:border-violet-900/50",
     },
     tagTone: {
         blue: "bg-blue-600 text-white",
@@ -41,7 +46,7 @@ const STYLES = {
     }
 }
 
-export const DataFunctionDefines = {
-    DATA_FUNCTION,
+export const GraphDefines = {
+    GRAPH,
     STYLES,
 }

@@ -1,23 +1,23 @@
 import {
-    DataFunctionDefines,
+    GraphDefines,
     type Variant,
     type TagTone,
     type Visibility
-} from "@/features/data-functions/new/new.constants"
+} from "@/features/graph/new/new.constants"
 import {
-    DataFunctionRow,
+    GraphRow,
     type CardProps
-} from "@/features/data-functions/new/new.types"
+} from "@/features/graph/new/new.types"
 
 const isVariant = (v: any): v is Variant => 
-    DataFunctionDefines.DATA_FUNCTION.variants.includes(v as Variant)
+    GraphDefines.GRAPH.variants.includes(v as Variant)
 
 const isTagTone = (t: any): t is TagTone =>
-    DataFunctionDefines.DATA_FUNCTION.tagTones.includes(t as TagTone)
+    GraphDefines.GRAPH.tagTones.includes(t as TagTone)
 
-export function mapDataFunctionToCard(r: DataFunctionRow): CardProps {
+export function mapGraphToCard(r: GraphRow): CardProps {
     
-    const variant: Variant = isVariant(r.variant) ? r.variant! : "default"
+    const variant: Variant = isVariant(r.variant) ? r.variant! : "Bar"
     const tagTone: TagTone = isTagTone(r.tag_tone) ? r.tag_tone! : "blue"
 
     const href =
@@ -36,6 +36,6 @@ export function mapDataFunctionToCard(r: DataFunctionRow): CardProps {
     }
 }
 
-export function mapRowsToCards(rows: DataFunctionRow[]): CardProps[] {
-    return rows.map(mapDataFunctionToCard)
+export function mapRowsToCards(rows: GraphRow[]): CardProps[] {
+    return rows.map(mapGraphToCard)
 }

@@ -64,7 +64,7 @@ export default function Header() {
     ]
 
     const algoLinks = [
-        { href: "/data-functions/new", label: t("header.link.data_function") },
+        { href: "/graph/new", label: t("header.link.graph") },
         { href: "/encrypt/aes", label: t("header.link.ex1") },
         { href: "/encrypt/rsa", label: t("header.link.ex2") }
     ]
@@ -128,7 +128,9 @@ export default function Header() {
         <header className="bg-black text-white">
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 md:px-6 xl:px-12">
                 <div className="flex items-center gap-4">
-                    <h1 className="text-xl md:text-2xl font-bold">ABOUT SQL</h1>
+                    <h1 className="text-xl md:text-2xl font-bold">
+                        {`${t("header.logo")}`}
+                    </h1>
 
                     <nav className="hidden md:flex items-center">
                         <ul className="flex items-center gap-6">

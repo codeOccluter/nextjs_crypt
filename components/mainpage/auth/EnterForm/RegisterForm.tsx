@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Input from "@/components/ui/common/Input"
+import { useTranslation } from "@/lib/i18n/i18n-client"
 
 type RegisterPayload = {
     name: string
@@ -24,49 +25,57 @@ export default function RegisterForm({
         password: "",
         primaryLang: ""
     })
+    const { t } = useTranslation()
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
 
         onSubmit(form)
     }
+    
+    const handleBirthChange = (value: string) => {
+        // 숫자 8자리만 허용
+        const input = value.replace(/[^0-9]/g, "").slice(0, 8)
+        setForm({...form, birth: input})
+    }
 
     return (
         <form onSubmit={handleSubmit} className="space-y-5">
             <Input 
-                label="이름"
+                label={`${t("login_modal.signup.name")}`}
                 value={form.name}
                 onChange={(v) => setForm({ ...form, name: v })}
             />
             <Input 
-                label="생년월일"
-                type="date"
+                label={`${t("login_modal.signup.birth")}`}
+                type="text"
                 value={form.birth}
-                onChange={(v) => setForm({ ...form, birth: v })}
+                onChange={handleBirthChange}
+                placeholder={`${t("login_modal.signup.birth_placeholder")}`}
             />
             <Input 
-                label="휴대폰 번호"
+                label={`${t("login_modal.signup.phone")}`}
                 value={form.phone}
                 onChange={(v) => setForm({ ...form, phone: v })}
-                placeholder="010-1234-5678"
+                placeholder={`${t("login_modal.signup.phone_placeholder")}`}
             />
             <Input 
-                label="이메일"
+                label={`${t("login_modal.signup.email")}`}
                 type="email"
                 value={form.email}
                 onChange={(v) => setForm({ ...form, email: v })}
             />
             <Input 
-                label="비밀번호"
+                label={`${t("login_modal.signup.pw")}`}
                 type="password"
                 value={form.password}
                 onChange={(v) => setForm({ ...form, password: v })}
             />
             <Input 
-                label="주 사용 언어"
+                label={`${t("login_modal.signup.main_language")}`}
                 value={form.primaryLang ?? "JavaScript"}
                 onChange={(v) => setForm({ ...form, primaryLang: v })}
-                placeholder="JavaScript, Java ..."
+                placeholder={`${t("login_modal.signup.ml_placeholder")}`}
             />
             <button
                 type="submit"
@@ -74,8 +83,8 @@ export default function RegisterForm({
                             items-center justify-center rounded-lg 
                             bg-emerald-500 px-4 font-semibold text-white shadow-lg 
                             hover:bg-emerald-600 active:scale-95 transition"
-            >가입하기</button>
-            <p className="text-xs text-white/60">프로필 사진은 가입 후 마이페이지에서 변경할 수 있어요.</p>
+            >{`${t("login_modal.signup.join")}`}</button>
+            <p className="text-xs text-white/60">{`${t("login_modal.signup.profile_notify")}`}</p>
         </form>
     )
 }

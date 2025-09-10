@@ -1,15 +1,35 @@
 {
     "header": {
+        "logo": "Data Labs",
         "home": "홈",
         "introduce": "소개",
         "document": "문서",
-        "insert_data": "데이터 추가",
+        "insert_data": "➕데이터",
         "welcome": "님! 안녕하세요!",
         "link": {
-            "data_function": "데이터 함수",
+            "graph": "그래프",
             "ex1": "예제1",
             "ex2": "예제2"
         }
+    },
+    "footer": {
+        "logo": "Data Labs",
+        "title": "데이터 연구소",
+        "footer_nav": {
+            "home": "홈",
+            "introduce": "소개",
+            "document": "문서",
+            "contact": "문의",
+            "developer": "개발진"
+        },
+        "copyrighter": "© Data Labs — All rights reserved."
+    },
+    "user_quick_panel": {
+        "account": "계정",
+        "quick_menu": "빠른 메뉴",
+        "close": "닫기",
+        "mypage": "마이페이지",
+        "setting": "설정"
     },
     "home": {
         "title": ["데이터 시각화", "데이터 가공", "데이터베이스 최적화"],
@@ -23,9 +43,58 @@
             "toEn": "ENG"
         }
     },
-    "data_functions": {
+    "login_modal": {
+        "signin": "Sign In",
+        "processing": "처리 중...",
+        "tap": {
+            "login": "로그인",
+            "signup": "회원가입",
+            "guest": "게스트"
+        },
+        "email": {
+            "email": "이메일",
+            "email_placeholder": "email@example.com",
+            "pw": "비밀번호",
+            "pw_placeholder": "*************",
+            "email_login": "로그인"
+        },
+        "signup": {
+            "name": "이름",
+            "birth": "생년월일",
+            "birth_placeholder": "YYYYMMDD",
+            "phone": "휴대폰 번호",
+            "phone_placeholder": "010-1234-5678",
+            "email": "email",
+            "pw": "비밀번호",
+            "main_language": "주 사용 언어",
+            "ml_placeholder": "JavaScript, Java ...",
+            "join": "가입하기",
+            "profile_notify": "프로필 사진은 가입 후 마이페이지에서 변경할 수 있어요."
+        },
+        "guest": {
+            "guest_notify": "게스트 모드는 체험용으로 제공됩니다. 일부 기능(프로필, 데이터 저장 등)이 제한될 수 있습니다.",
+            "nickname": "닉네임",
+            "nickname_option": "(선택)",
+            "nickname_placeholder": "2~8자 (미입력 시 임시닉네임)",
+            "nickame_warn": "닉네임은 2~8자 범위로 입력해 주세요",
+            "guest_agree": "게스트 이용에 관한 안내를 확인했고 동의합니다.",
+            "guest_session_notify": "세션 만료시 데이터가 삭제될 수 있습니다."
+        }
+    },
+    "guest_logout": {
+        "is_loading": "로그아웃 중...",
+        "guest_logout": "게스트 로그아웃",
+        "logout": "로그아웃",
+        "is_loading_confirm": "로그아웃 중... 잠시만 기다려주세요.",
+        "logout_confirm": "게스트 로그아웃을 하시겠습니까?",
+        "yes": "예",
+        "no": "아니오",
+        "processing": "처리 중...",
+        "no_cancel": "취소 불가"
+    },
+    "graphs": {
         "new": {
-            "title": "새 데이터 추가",
+            "title": "새 그래프 추가",
             "slug": "Slug *",
             "slug_placeholder": "[고유값] slug",
             "card_title": "Title *",
@@ -50,6 +119,12 @@
             "metadata_placeholder": "ex) {\"key\": \"value\"}",
             "save": "저장",
             "cancel": "취소"
+        }
+    },
+    "main": {
+        "graph_grid": {
+            "get_data_error": "데이터를 불러오는 중 문제가 발생했습니다.",
+            "no_more_data": "더 이상 항목이 없습니다."
         }
     }
 }

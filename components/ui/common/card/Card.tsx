@@ -1,6 +1,6 @@
 import Link from "next/link"
-import { DataFunctionDefines, type Variant, type TagTone, type Visibility } from "@/features/data-functions/new/new.constants"
-import { CardProps } from "@/features/data-functions/new/new.types"
+import { GraphDefines, type Variant, type TagTone, type Visibility } from "@/features/graph/new/new.constants"
+import { CardProps } from "@/features/graph/new/new.types"
 import ArrowIcon from "../Icons/ArrowIcons"
 
 export default function Card({
@@ -10,7 +10,7 @@ export default function Card({
     icon,
     tag,
     tagTone = "blue",
-    variant = "default",
+    variant = "Bar",
     external = false,
     disabled = false,
     prefetch = true,
@@ -19,10 +19,10 @@ export default function Card({
 }: CardProps) {
 
     const cardClass = [
-        DataFunctionDefines.STYLES.cn.BASE,
-        DataFunctionDefines.STYLES.cn.FOCUS,
-        DataFunctionDefines.STYLES.variants[variant],
-        disabled ? DataFunctionDefines.STYLES.cn.DISABLED : "",
+        GraphDefines.STYLES.cn.BASE,
+        GraphDefines.STYLES.cn.FOCUS,
+        GraphDefines.STYLES.variants[variant],
+        disabled ? GraphDefines.STYLES.cn.DISABLED : "",
         "relative h-full flex flex-col rounded-2xl border",
         "transition-all duration-200 ease-out",
         "bg-white/75 dark:bg-white/5 backdrop-blur-[1px]",
@@ -32,7 +32,7 @@ export default function Card({
 
     const tagClass = [
         "absolute top-4 right-4 rounded-full text-[11px] leading-5 px-2 py-[2px] shadow-sm select-none",
-        DataFunctionDefines.STYLES.tagTone[tagTone],
+        GraphDefines.STYLES.tagTone[tagTone],
     ].join(" ")
 
     const Body = (
@@ -106,11 +106,11 @@ export default function Card({
     )
 }
 
-export function CardSkeleton({ variant = "default" as Variant }) {
+export function CardSkeleton({ variant = "Bar" as Variant }) {
     const skeletonClass = [
-        DataFunctionDefines.STYLES.cn.BASE,
-        DataFunctionDefines.STYLES.variants[variant],
-        "relative h-full rounded-2xl border overflow-hidden"
+        GraphDefines.STYLES.cn.BASE,
+        GraphDefines.STYLES.variants[variant],
+        "relative h-GraphDefines rounded-2xl border overflow-hidden"
     ].join(" ")
 
     return (
