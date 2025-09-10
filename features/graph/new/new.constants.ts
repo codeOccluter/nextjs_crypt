@@ -1,4 +1,3 @@
-
 const GRAPH = {
     variants: ["Pie", "Bar", "Doughnut", "Line", "Histogram"] as const,
     tagTones: ["blue", "slate", "emerald", "violet", "rose"] as const,
