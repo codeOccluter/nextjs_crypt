@@ -26,6 +26,7 @@ export function mapGraphToCard(r: GraphRow): CardProps {
             : (r.path ?? (r.slug ? `/data/${r.slug}` : "#"))
 
     return {
+        slug: r.slug,
         title: r.title,
         description: r.description ?? undefined,
         href,

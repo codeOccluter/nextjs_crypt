@@ -110,7 +110,8 @@ async function createGraph(formData: FormData) {
         })
     }catch(err: any) {
         if(err?.code === "ER_DUP_ENTRY") redirect(`/graph/new?error=duplicate`)
-        
+            
+        console.log(err)
         redirect(`/graph/new?error=unknown`)
     }
 

@@ -16,13 +16,18 @@ export default function ChartClient({ slug }: { slug: string }) {
     const [loading, setLoading] = useState(true)
     const [err, setErr] = useState<string | null>(null)
 
+    console.log()
+
     useEffect(() => {
         
         let alive = true
         setLoading(true)
         setErr(null)
         axiosClient.get<ApiResponse>(`/api/graph/${slug}`)
-            .then(result => alive && setResponse(result.data) )
+            .then(result => {
+                alive && setResponse(result.data) 
+                console.log(`result.data: ${JSON.stringify(result.data)}`)
+            })
             .catch(e => alive && setErr(e?.message ?? "load error"))
             .finally(() => alive && setLoading(false))
 
@@ -33,12 +38,12 @@ export default function ChartClient({ slug }: { slug: string }) {
         return <div className="h-64 animate-pulse rounded-lg bg-black/5 dark:bg-white/10" />
     
     if(err || !response)
-        return <div className="text-red-600">Load error: {err}</div>
+        return <div className="text-red-600">Load error111: {err}</div>
 
     return (
         <div className="mx-auto max-w-5xl px-4 py-6">
             <h1 className="text-2xl font-bold mb-4">{response.def.options?.title ?? response.def.slug}</h1>
-            {/* <ChartRenderer def={response.def} data={response.data} /> */}
+            <ChartRenderer type={response.def.type} data={response.data} />
         </div>
     )
 }

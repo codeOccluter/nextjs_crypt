@@ -29,7 +29,7 @@ export async function ensureClientDBReady() {
         ClientSQL.hasMetadata(entity)
     })
 
-    console.log(allRegistered)
+    // console.log(allRegistered)
 
     if(!allRegistered) {
         await ClientSQL.destroy()

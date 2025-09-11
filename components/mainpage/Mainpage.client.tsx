@@ -2,8 +2,8 @@
 
 import { ReactNode, useState } from "react"
 
-type Variant = "default" | "dashboard" | "cryptography" | "compact"
-type TagTone = "blue" | "slate" | "emerald" | "violet" | "rose"
+import type { Variant, TagTone } from "@/features/graph/new/new.constants"
+
 
 type CardProps = {
     title: string

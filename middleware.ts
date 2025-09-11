@@ -8,7 +8,7 @@ const defaultLocale = 'ko';
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  console.log('🌐 middleware pathname:', pathname);
+  // console.log('🌐 middleware pathname:', pathname);
 
   // ✅ 이미 locale이 붙어 있는 경우는 그대로 통과
   const pathnameIsMissingLocale = locales.every(

@@ -1,24 +1,54 @@
 import { NextResponse } from "next/server"
-import { ChartApiResponse } from "@/features/graph/Chart/chart.constant"
+import { readGraph, writeGraph, deleteGraph } from "@/server/utils/graph/fs-store"
+import type { ChartApiResponse } from "@/features/graph/Chart/chart.constant"
 
-export async function GET(_: Request, { params }: { params: { slug: string } }) {
+export async function GET(_req: Request, { params }: { params: { slug: string } }) {
 
-    let response: ChartApiResponse
-
-    const def = {
-        id: 1,
-        slug: params.slug,
-        type: "Bar",
-        fiedMap: { x: "month", y: "value" },
-        options: { title: "월별 매출", legend: true, stacked: false },
-        dataSource: { kind: "inline" }
+    const found = await readGraph(params.slug)
+    console.log(JSON.stringify(params))
+    if(!found) {
+        return NextResponse.json({ error: `Not found` }, { status: 404 })
     }
 
-    const data = [
-        { month: "Jan", vale: 12 },
-        { month: "Feb", vale: 18 },
-        { month: "Mar", vale: 7 },
-    ]
+    return NextResponse.json(found)
+}
 
-    return NextResponse.json({ def, data })
+export async function POST(req: Request, { params }: { params: { slug: string } }) {
+    try{
+        const body = (await req.json()) as ChartApiResponse
+
+        if(!body?.def) {
+            return NextResponse.json({ error: `def is required` }, { status: 400 })
+        }
+
+        body.def.slug = params.slug
+        await writeGraph(params.slug, body)
+        
+        return NextResponse.json({ ok: true })
+    }catch(err: any) {
+        return NextResponse.json({ ok: false, error: err?.message ?? `Unknown error` }, { status: 500 })
+    }
+}
+
+export async function PUT(req: Request, { params }: { params: { slug: string } }) {
+    
+    try{
+        const body = (await req.json()) as ChartApiResponse
+
+        if(!body?.def) {
+            return NextResponse.json({ error: `def is required` }, { status: 400 })
+        }
+
+        body.def.slug = params.slug
+        await writeGraph(params.slug, body)
+        
+        return NextResponse.json({ ok: true })
+    }catch(err: any) {
+        return NextResponse.json({ ok: false, error: err?.message ?? `Unknown error` }, { status: 500 })
+    }
+}
+
+export async function DELETE(_: Request, { params }: { params: { slug: string } }) {
+    await deleteGraph(params.slug)
+    return NextResponse.json({ ok: true })
 }

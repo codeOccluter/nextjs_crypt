@@ -6,6 +6,7 @@ import { CardProps } from "@/features/graph/new/new.types"
 import ArrowIcon from "../Icons/ArrowIcons"
 
 export default function Card({
+    slug,
     title,
     description,
     href,
@@ -67,7 +68,7 @@ export default function Card({
     if(href && !disabled) {
         return (
             <Link
-                href={href}
+                href={`/graph/${slug}`}
                 prefetch={prefetch}
                 target={external ? "_blank" : undefined}
                 rel={external ? "noopener noreferrer" : undefined}
@@ -82,7 +83,7 @@ export default function Card({
     return <div role="group" className="block">{content}</div>
 }
 
-export function CardSkeleton({ variant = "default" as Variant }) {
+export function CardSkeleton({ variant = "Bar" as Variant }) {
     const skeletonClass = [
         GraphDefines.STYLES.cn.BASE,
         GraphDefines.STYLES.variants[variant],

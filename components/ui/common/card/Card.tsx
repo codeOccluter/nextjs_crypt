@@ -4,6 +4,7 @@ import { CardProps } from "@/features/graph/new/new.types"
 import ArrowIcon from "../Icons/ArrowIcons"
 
 export default function Card({
+    slug,
     title,
     description,
     href,
@@ -89,7 +90,7 @@ export default function Card({
         
         return (
             <Link
-                href={href}
+                href={`/graph/${slug}`}
                 prefetch={prefetch}
                 target={external ? "_blank" : undefined}
                 rel={external ? "noopener noreferrer" : undefined}

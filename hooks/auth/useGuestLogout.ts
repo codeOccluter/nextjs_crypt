@@ -19,7 +19,7 @@ export default function useGuestLogout() {
             invalidateSession()
         },
         onError: (err) => {
-            console.error(`[logoutGuest() failed]: ${parseAxiosError(err)}`)
+            // console.error(`[logoutGuest() failed]: ${parseAxiosError(err)}`)
         },
         retry: 1
     })

@@ -18,10 +18,10 @@ export default function SessionGate({
 
     useEffect(() => {
 
-        console.log(`query.data.role: ${JSON.stringify(query.data)}`)
-        console.log(`query.isLoading: ${query.isLoading}`)
-        console.log(`user: ${JSON.stringify(user)}`)
-        console.log(`Status: ${status}`)
+        // console.log(`query.data.role: ${JSON.stringify(query.data)}`)
+        // console.log(`query.isLoading: ${query.isLoading}`)
+        // console.log(`user: ${JSON.stringify(user)}`)
+        // console.log(`Status: ${status}`)
         if(status === "unauthenticated") setOpen(true)
         if(status === "authenticated" || status === "guest") setOpen(false)
     }, [status])

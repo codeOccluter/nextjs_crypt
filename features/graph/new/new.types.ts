@@ -23,6 +23,7 @@ export type GraphRow = {
 }
 
 export interface CardProps {
+    slug: string
     title: string
     description?: string
     href: string

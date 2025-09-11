@@ -92,7 +92,7 @@ export default function GraphGrid() {
             <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 sm:gap-8 xl:gap-10 auto-rows-fr">
                     {cards.map((card) => (
-                        <div key={card.href} className="h-full">
+                        <div key={card.slug} className="h-full">
                             <Card 
                                 {...card}
                             />
