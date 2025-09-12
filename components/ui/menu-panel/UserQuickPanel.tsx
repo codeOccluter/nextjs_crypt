@@ -8,23 +8,20 @@ import GuestLogoutButton from "@/components/mainpage/auth/GuestLogoutButton"
 import LocaleLink from "../common/i18n/LocaleLink"
 import { LucideUserCircle2 } from "lucide-react"
 import { useTranslation } from "@/lib/i18n/i18n-client"
+import { useUserPanelStore } from "@/stores/ui/userPanel.store"
 
 export default function UserQuickPanel() {
 
-    const [open, setOpen] = useState(false)
+    const { UserQuickPanelOpen, toggleUserQuickPanel, closeUserQuickPanel } = useUserPanelStore()
     const panelRef = useRef<HTMLDivElement | null>(null)
     const firstFocusRef = useRef<HTMLButtonElement | null>(null)
 
-    const router = useRouter()
-    const pathname = usePathname()
-    const searchParams = useSearchParams()
     const { locale } = useParams() as { locale?: string }
-    const prefix = `/${locale ?? "ko"}`
     const { t } = useTranslation()
 
     useEffect(() => {
         const onKeyDown = (e: KeyboardEvent) => {
-            if(e.key === "Escape") setOpen(false)
+            if(e.key === "Escape") closeUserQuickPanel()
         }
         document.addEventListener("keydown", onKeyDown)
 
@@ -32,7 +29,7 @@ export default function UserQuickPanel() {
     }, [])
 
     useEffect(() => {
-        if(!open) return
+        if(!UserQuickPanelOpen) return
 
         const prev = document.body.style.overflow
         document.body.style.overflow = "hidden"
@@ -42,11 +39,11 @@ export default function UserQuickPanel() {
         return () => {
             document.body.style.overflow = prev
         }
-    }, [open])
+    }, [UserQuickPanelOpen])
 
     const handleOverlayDown: React.MouseEventHandler<HTMLDivElement> = (e) => {
         if(!panelRef.current) return
-        if(!panelRef.current.contains(e.target as Node)) setOpen(false)
+        if(!panelRef.current.contains(e.target as Node)) closeUserQuickPanel()
     }
 
     return (
@@ -54,19 +51,19 @@ export default function UserQuickPanel() {
             <button
                 type="button"
                 aria-haspopup="dialog"
-                aria-expanded={open}
-                onClick={() => setOpen((set) => !set)}
+                aria-expanded={UserQuickPanelOpen}
+                onClick={toggleUserQuickPanel}
                 className="inline-flex items-center gap-2 h-9 px-3 rounded-lg
                         bg-white/10 hover:bg-white/15 active:scale-95
                         border border-white/15 text-white text-sm font-medium
                         focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
             >
                 <LucideUserCircle2 className="text-blue-300 text-lg" />
-                <span className="hidden sm:inline">{`${t("user_quick_panel.account")}`}</span>
+                <span className="hidden sm:inline">{`${t("user_menu-panel.account")}`}</span>
             </button>
 
             <AnimatePresence>
-                {open && (
+                {UserQuickPanelOpen && (
                     <motion.div
                         className="fixed inset-0 z-[70]"
                         initial={{ opacity: 0 }}
@@ -89,10 +86,10 @@ export default function UserQuickPanel() {
                             transition={{ type: "spring", stiffness: 280, damping: 26 }}
                         >
                             <div className="flex items-center justify-between px-4 h-12 border-b border-white/10">
-                                <span className="text-sm font-semibold text-white/90">{`${t("user_quick_panel.quick_menu")}`}</span>
+                                <span className="text-sm font-semibold text-white/90">{`${t("user_menu-panel.quick_menu")}`}</span>
                                 <button
-                                    onClick={() => setOpen(false)}
-                                    aria-label={`${t("user_quick_panel.close")}`}
+                                    onClick={closeUserQuickPanel}
+                                    aria-label={`${t("user_menu-panel.close")}`}
                                     className="rounded p-2 hover:bg-white/10"
                                     ref={firstFocusRef}
                                 >
@@ -107,18 +104,18 @@ export default function UserQuickPanel() {
                                         <LocaleLink
                                             href="/account"
                                             className="flex items-center gap-2 rounded px-3 py-2 text-sm text-zinc-200 hover:bg-white/10"
-                                            onClick={() => setOpen(false)}
+                                            onClick={closeUserQuickPanel}
                                         >
-                                            <LuUser /> {`${t("user_quick_panel.mypage")}`}
+                                            <LuUser /> {`${t("user_menu-panel.mypage")}`}
                                         </LocaleLink>
                                     </li>
                                     <li>                                    
                                         <LocaleLink
                                             href="/settings"
                                             className="flex items-center gap-2 rounded px-3 py-2 text-sm text-zinc-200 hover:bg-white/10"
-                                            onClick={() => setOpen(false)}
+                                            onClick={closeUserQuickPanel}
                                         >
-                                            <LuSettings /> {`${t("user_quick_panel.setting")}`}
+                                            <LuSettings /> {`${t("user_menu-panel.setting")}`}
                                         </LocaleLink>
                                     </li>
                                     <li className="border-t border-white/10 my-2" />

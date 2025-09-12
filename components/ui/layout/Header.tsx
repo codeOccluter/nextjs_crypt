@@ -11,7 +11,7 @@ import { useParams, usePathname, useRouter, useSearchParams } from "next/navigat
 import { BsGlobe2 } from "react-icons/bs"
 import { buildLocaleUrl, toggleLocale } from "@/lib/i18n/locale"
 import type { Locale } from "@/lib/i18n/config"
-import UserQuickPanel from "../quick_panel/UserQuickPanel"
+import UserQuickPanel from "../menu-panel/UserQuickPanel"
 import { useTranslation } from "@/lib/i18n/i18n-client"
 
 function LanguageSwitcherButton() {
