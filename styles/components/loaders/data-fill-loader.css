@@ -1,0 +1,71 @@
+/* 차오르는 애니메이션 공통 */
+@keyframes dfl-rise {
+    0% {
+        transform: translateY(100%);
+    }
+
+    60% {
+        transform: translateY(-8%);
+    }
+
+    /* 살짝 오버슈트 */
+    100% {
+        transform: translateY(0%);
+    }
+}
+
+/* 반짝이는 하이라이트(글로스) 내려가는 효과 */
+@keyframes dfl-gloss {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0.0;
+    }
+
+    20% {
+        opacity: 0.15;
+    }
+
+    100% {
+        transform: translateY(100%);
+        opacity: 0.0;
+    }
+}
+
+.dfl-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dfl-svg {
+    display: block;
+}
+
+.dfl-bar {
+    transform-origin: bottom center;
+    animation-name: dfl-rise;
+    animation-timing-function: cubic-bezier(.2, .9, .25, 1);
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+.dfl-gloss {
+    animation: dfl-gloss var(--dfl-duration, 1.8s) linear infinite;
+}
+
+/* 약간의 딜레이로 바별 시차 */
+.dfl-bar.delay-1 {
+    animation-delay: .12s;
+}
+
+.dfl-bar.delay-2 {
+    animation-delay: .24s;
+}
+
+.dfl-bar.delay-3 {
+    animation-delay: .36s;
+}
+
+.dfl-bar.delay-4 {
+    animation-delay: .48s;
+}
