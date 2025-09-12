@@ -14,6 +14,7 @@
     "@visx/responsive": "^3.12.0",
     "@visx/visx": "^3.12.0",
     "clsx": "^2.1.1",
+    "exceljs": "^4.4.0",
     "framer-motion": "^12.23.12",
     "i18next": "^25.3.2",
     "jose": "^6.0.12",
@@ -32,6 +33,7 @@
     "rechart": "^0.0.1",
     "reflect-metadata": "^0.2.2",
     "uuid": "^11.1.0",
+    "xlsx": "^0.18.5",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
