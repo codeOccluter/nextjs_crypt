@@ -68,7 +68,7 @@ export default function Card({
     if(href && !disabled) {
         return (
             <Link
-                href={`/graph/${slug}`}
+                href={`/main/graph/${slug}`}
                 prefetch={prefetch}
                 target={external ? "_blank" : undefined}
                 rel={external ? "noopener noreferrer" : undefined}

@@ -1,4 +1,4 @@
-import { SignJWT, jwtVerify, errors } from "jose"
+import { SignJWT, jwtVerify, errors, JWTPayload } from "jose"
 
 const AUTH_JWT_SECRET = new TextEncoder().encode(process.env.AUTH_JWT_SECRET || `dev-secret-change-me`)
 
@@ -9,23 +9,32 @@ export async function signAccessToken(
     payload: Record<string, any>, 
     expiresIn = ACCESS_TTL
 ) {
+    if(!payload || typeof payload !== "object") {
+        throw new Error("signAccessToken: payload must be a non-null object")
+    }
+    // sub 우선순위: payload.sub > payload.guestId
+    const subject = (payload as any).sub ?? (payload as any).guestId
 
-    return await new SignJWT(payload)
+    return await new SignJWT(payload as JWTPayload)
         .setProtectedHeader({ alg: "HS256", typ: "JWT" })
-        .setSubject(String(payload.guestId))
+        .setSubject(String(subject))
         .setIssuedAt()
         .setExpirationTime(expiresIn)
         .sign(AUTH_JWT_SECRET)
 }
 
 export async function signRefreshToken(
-    payload: Record<string, any> & { guestId: string | number }, 
+    payload: Record<string, any> & { guestId?: string | number, sub?: string | number }, 
     expiresIn = REFRESH_TTL
 ) {
+    if(!payload || typeof payload !== "object") {
+        throw new Error("signRefreshToken: payload must be a non-null object")
+    }
+    const subject = (payload as any).sub ?? (payload as any).guestId
 
-    return await new SignJWT(payload)
+    return await new SignJWT(payload as JWTPayload)
         .setProtectedHeader({ alg: "HS256", typ: "JWT" })
-        .setSubject(String(payload.guestId))
+        .setSubject(String(subject))
         .setIssuedAt()
         .setExpirationTime(expiresIn)
         .sign(AUTH_JWT_SECRET)

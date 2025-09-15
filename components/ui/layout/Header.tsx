@@ -64,7 +64,7 @@ export default function Header() {
     ]
 
     const algoLinks = [
-        { href: "/graph/new", label: t("header.link.graph") },
+        { href: "/main/graph/new", label: t("header.link.graph") },
         { href: "/encrypt/aes", label: t("header.link.ex1") },
         { href: "/encrypt/rsa", label: t("header.link.ex2") }
     ]

@@ -4,7 +4,6 @@ import { useTranslation } from "@/lib/i18n/i18n-client"
 import { useEffect, useState, useMemo } from "react"
 
 type GuestPanelProps = {
-    // 상위 컴포넌트 (AuthModal)에서 게스트 입장 로직 설계
     onGuestSubmit: (opts?: { 
         nickname?: string 
         ttlMs?: number 

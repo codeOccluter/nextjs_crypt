@@ -78,7 +78,7 @@ export default function NewGraphDataPage() {
             }
 
             await axiosClient.post(`/api/graph/${slug}`, payload)
-            router.replace(`/graph/${slug}`)
+            router.replace(`/main/graph/${slug}`)
             router.refresh()
         }catch(err: any) {
             alert(`저장 실패: ${err?.message} - Unknown Error`)
@@ -102,7 +102,7 @@ export default function NewGraphDataPage() {
             }
 
             await axiosClient.post(`/api/graph/${slug}`, payload)
-            router.replace(`/graph/${slug}`)
+            router.replace(`/main/graph/${slug}`)
             router.refresh()
         }catch(err: any) {
             alert("JSON이 유효한지 확인해주세요.\n" + (err?.message ?? "unknown error"));

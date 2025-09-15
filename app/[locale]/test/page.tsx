@@ -1,1 +1,0 @@
-export default function T() { return <div>OK {Date.now()}</div> }

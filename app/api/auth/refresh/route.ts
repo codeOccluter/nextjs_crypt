@@ -33,7 +33,7 @@ export async function POST() {
             return NextResponse.json({ message: `No refresh token` }, { status: 401 })
         }
 
-        const payload = await verifyToken<{ sub: string, role: number }>(refreshToken).catch(() => null)
+        const payload = await verifyToken<{ sub: string, role?: number; guestId?: string; nickname?: string; guestIdx?: number }>(refreshToken).catch(() => null)
         if(!payload) {
             const response = NextResponse.json({ message: `Invalid refresh` }, { status: 401 })
             response.cookies.set({
@@ -46,7 +46,13 @@ export async function POST() {
             return response
         }
         
-        const newAccessToken = await signAccessToken({ sub: payload.sub, role: payload.role })
+        const newAccessToken = await signAccessToken({
+            sub: payload.sub,
+            role: payload.role ?? 0,
+            guestId: payload.guestId ?? payload.sub,
+            nickname: payload.nickname,
+            guestIdx: payload.guestIdx,
+        })
         const response = NextResponse.json({ accessToken: newAccessToken }, { status: 200 })
         
         return response

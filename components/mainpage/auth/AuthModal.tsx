@@ -28,13 +28,6 @@ type Props = {
       }) => Promise<void> | void
 }
 
-// const tabs = [
-//     { key: "login", label: "로그인" },
-//     { key: "register", label: "회원가입" },
-//     { key: "guest", label: "게스트" }
-// ] as const
-// type TabKey = typeof tabs[number]["key"]
-
 export default function AuthModal({ open, pending, onEmailLogin, onRegister, onGuestLogin }: Props) {
 
     const [tab, setTab] = useState<TabKey>("login")

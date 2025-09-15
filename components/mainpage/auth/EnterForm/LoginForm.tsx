@@ -34,25 +34,27 @@ export default function LoginForm({
     }
 
     return (
-        <form
-            id="login-form"
-            onSubmit={handleSubmit}
-            className="space-y-4"
-        >
-            <Input 
-                label={`${t("login_modal.email.email")}`}
-                type="email"
-                value={email}
-                onChange={setEmail}
-                placeholder={`${t("login_modal.email.email_placeholder")}`}
-            />
-            <Input 
-                label={`${t("login_modal.email.pw")}`}
-                type="password"
-                value={password}
-                onChange={setPassword}
-                placeholder={`${t("login_modal.email.pw_placeholder")}`}
-            />
-        </form>
+        <div>
+            <form
+                id="login-form"
+                onSubmit={handleSubmit}
+                className="space-y-4"
+            >
+                <Input 
+                    label={`${t("login_modal.email.email")}`}
+                    type="email"
+                    value={email}
+                    onChange={setEmail}
+                    placeholder={`${t("login_modal.email.email_placeholder")}`}
+                />
+                <Input 
+                    label={`${t("login_modal.email.pw")}`}
+                    type="password"
+                    value={password}
+                    onChange={setPassword}
+                    placeholder={`${t("login_modal.email.pw_placeholder")}`}
+                />
+            </form>
+        </div>
     )
 }

@@ -34,6 +34,7 @@ export async function POST(req: NextRequest) {
     const guest = await createGuest({ nickname, ttlMs })
 
     const basePayload = { 
+        sub: guest.id,
         guestId: guest.id, 
         role: guest.role, 
         nickname: guest.nickname,

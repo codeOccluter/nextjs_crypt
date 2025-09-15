@@ -43,6 +43,12 @@ const saveAccessToken = (token: string | null) => {
     else localStorage.removeItem("accessToken")
 }
 
+// Public helper to fully clear client-side auth state (header + storage)
+export const clearAxiosAuth = () => {
+    try { saveAccessToken(null) } catch {}
+    setAuthHeader(null)
+}
+
 axiosClient.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
         
@@ -71,10 +77,11 @@ axiosClient.interceptors.response.use(
         const status = error.response?.status ?? 0
 
         if(status === 401 && original && !original._retry) {
-            
+
             original._retry = true
 
-            if(!isRefreshing) {
+            // 이미 리프레시 중이면 대기열에 넣고 기다린다
+            if(isRefreshing) {
                 return new Promise((resolve, reject) => {
                     pendingQueue.push({
                         resolve: () => resolve(axiosClient(original)),
@@ -83,6 +90,7 @@ axiosClient.interceptors.response.use(
                 })
             }
 
+            // 리프레시 시작
             isRefreshing = true
 
             try {

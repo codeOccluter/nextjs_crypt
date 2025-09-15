@@ -1,6 +1,7 @@
 "use client"
 
 import { useQuery } from "@tanstack/react-query"
+import { useSession } from "next-auth/react"
 import axiosClient from "@/lib/axios/axiosClient"
 
 export type AuthStatus = "authenticated" | "guest" | "unauthenticated" | "loading"
@@ -30,22 +31,31 @@ async function fetchSession(): Promise<SessionUser | null> {
 
 export default function useSessionQuery() {
 
+    const { data: nextAuthSession, status: nextAuthStatus } = useSession()
+
     const query = useQuery({
         queryKey: SESSION_QUERY_KEY,
         queryFn: fetchSession,
-        staleTime: 60 * 1000, // 1분 동안 fresh
-        gcTime: 5 * 60 * 1000,
-        retry: false
+        staleTime: 0,
+        gcTime: 0,
+        retry: false,
+        enabled: nextAuthStatus !== "authenticated"
     })
 
     const getAuthStatus = (): AuthStatus => {
 
-        const user = query.data?.user
-        // console.log(`getAuthStatus: | ${JSON.stringify(query.data?.user)}`)
-        let status: AuthStatus = "unauthenticated"
-        if(!user) {
-            return status
+        console.log(`useSessionQuery - nextAuthStatus: ${JSON.stringify(nextAuthStatus)} `)
+        console.log(`useSessionQuery - nextAuthSesssion: ${JSON.stringify(nextAuthSession)} `)
+        console.log(`useSessionQuery - query.data: ${JSON.stringify(query.data)} `)
+
+        if(nextAuthStatus === "authenticated" && nextAuthSession?.user) {
+            return "authenticated"
         }
+        if(nextAuthStatus === "loading") return "loading"
+
+        const user = query.data?.user
+        let status: AuthStatus = "unauthenticated"
+        if(!user) return status
 
         if(user.role === 0) {
             status = "guest"
@@ -59,7 +69,7 @@ export default function useSessionQuery() {
     return {
         status,
         query,
-        user: query.data ?? null,
+        user: nextAuthStatus === "authenticated" ? nextAuthSession : query.data ?? null,
         refresh: query.refetch,
         _query: query,
     }
