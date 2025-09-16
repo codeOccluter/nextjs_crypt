@@ -1,35 +1,55 @@
-import GoogleProvider from "next-auth/providers/google"
 import type { NextAuthOptions } from "next-auth"
+import axiosClient from "./lib/axios/axiosClient"
+import { ACTIVE_PROVIDERS, SUPPORTED_PROVIDERS } from "./features/auth/oauth/oauth.constants"
 
 const authOptions: NextAuthOptions = {
     session: { strategy: "jwt" },
-    providers: [
-        GoogleProvider({
-            clientId: process.env.AUTH_GOOGLE_ID!,
-            clientSecret: process.env.AUTH_GOOGLE_SECRET!,
-        })
-    ],
+    providers: ACTIVE_PROVIDERS.map(providerName => {
+        const providerConfig = SUPPORTED_PROVIDERS[providerName as keyof typeof SUPPORTED_PROVIDERS]
+        if(!providerConfig) {
+            throw new Error(`Unsupported provider: ${providerName}`)
+        }
+        return (providerConfig.provider as any)(providerConfig.config)
+    }),
     callbacks: {
         async jwt({ token, account, profile }) {
-            if(account?.provider === "google") {
-                token.provider = "google"
+            if(account?.provider && profile) {
+                try {
+                    const response = await axiosClient.post(`${process.env.NEXTAUTH_URL}/api/auth/${account.provider}`, {
+                        providerId: profile.sub,
+                        email: profile.email,
+                        name: profile.name,
+                        image: profile.image
+                    })
+
+                    if(response.data) {
+                        const data = response.data
+                        
+                        token.userId = data.id
+                        token.role = data.role
+                        token.provider = data.provider
+                        token.accessToken = data.accessToken
+                    }
+                }catch(error) {
+                    console.error(`${account.provider} Login API call failed: ${error}`)
+                }
             }
-            if(profile) {
-                token.name = profile.name ?? token.name
-                token.email = (profile as any).email ?? token.email
-                token.picture = (profile as any).picture ?? token.picture
-            }
+
             return token
         },
         async session({ session, token }) {
-            session.user = {
-                ...session.user,
-                name: token.name as string | undefined,
-                email: token.email as string | undefined,
-                image: token.picture as string | undefined,
-                role: (token as any).role ?? 0,
-                provider: (token as any).provider ?? "google",
-            } as any
+            
+            if(token.userId) {
+                session.user = {
+                    ...session.user,
+                    id: token.userId as string,
+                    name: token.name as string,
+                    email: token.email as string,
+                    image: token.picture as string,
+                    role: token.role as number,
+                    provider: token.provider as string
+                } as any
+            }
             return session
         }
     }

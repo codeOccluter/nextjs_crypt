@@ -11,7 +11,7 @@ type GuestPanelProps = {
     onValidChange?: (valid: boolean) => void
 }
 
-export default function GuestPanel({
+export default function GuestForm({
     onGuestSubmit,
     onValidChange
 }: GuestPanelProps) {

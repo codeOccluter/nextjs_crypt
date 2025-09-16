@@ -5,8 +5,8 @@ import axiosClient from "@/lib/axios/axiosClient"
 import Link from "next/link"
 import type { ChartDefinition } from "@/features/graph/Chart/chart.constant"
 import ChartRenderer from "@/components/ui/common/graph/chart/ChartRenderer"
-import NotGraph from "@/components/graph/NotGraph"
-import DeleteGraphButton from "@/components/graph/DeleteGraphButton"
+import NotGraph from "@/components/graph/ui/NotGraph"
+import DeleteGraphButton from "@/components/graph/ui/DeleteGraphButton"
 
 type ApiResponse = { 
     def: ChartDefinition

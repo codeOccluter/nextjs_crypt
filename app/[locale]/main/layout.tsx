@@ -1,7 +1,7 @@
 import Header from "@/components/ui/layout/Header"
 import Footer from "@/components/ui/layout/Footer"
-import SessionGate from "@/components/mainpage/auth/Gate/SessionGate"
-import SessionProvider from "@/components/auth/SessionProvider"
+import SessionGate from "@/components/auth/gate/SessionGate"
+import SessionProvider from "@/components/oauth-temp/SessionProvider";
 
 export default async function MainLayout({
   children,

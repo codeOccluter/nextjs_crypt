@@ -7,11 +7,11 @@ import axiosClient from "@/lib/axios/axiosClient"
 export type AuthStatus = "authenticated" | "guest" | "unauthenticated" | "loading"
 export type SessionUser = {
     user: {
-        guestId: string
+        guestId?: string
         role: 0 | 1 | 2
-        nickname: string
+        nickname?: string
         email?: string
-        guestIdx: number
+        guestIdx?: number
     }
 }
 
@@ -57,6 +57,7 @@ export default function useSessionQuery() {
         let status: AuthStatus = "unauthenticated"
         if(!user) return status
 
+        // 
         if(user.role === 0) {
             status = "guest"
         }

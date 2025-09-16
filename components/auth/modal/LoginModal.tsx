@@ -26,7 +26,6 @@ export default function LoginModal({
     onPrimary,
     primaryDisabled,
     pending,
-    onSubmit,
     backgroundImageUrl = "",
     gradientClassName = "from-sky-500/40 via-fuchsia-500/30 to-rose-500/40",
     children
