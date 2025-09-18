@@ -1,8 +1,8 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import AuthModal from "../modal/AuthModal"
-import useSessionQuery from "@/hooks/auth/useSessionQuery"
+import { useUnfiedSession } from "@/hooks/auth/useUnfiedSession"
 import useGuestLogin from "@/hooks/auth/useGuestLogin"
 
 type Props = { children: React.ReactNode }
@@ -11,16 +11,35 @@ export default function SessionGate({
     children
 }: Props) {
 
+    const { status, refresh } = useUnfiedSession()
     const { guestLogin, pending } = useGuestLogin()
-    const { status, query, refresh, user } = useSessionQuery()
-
     const [open, setOpen] = useState(false)
-    // const bridged = useRef(false)
 
     useEffect(() => {
-        if(status === "loading") return setOpen(true)
-        if(status === "unauthenticated") return setOpen(true)
-        if(status === "authenticated" || status === "guest") return setOpen(false)
+
+        // if(status === "loading") {
+        //     setOpen(false)
+        //     return
+        // }
+        // if(status === "unauthenticated") {
+        //     setOpen(true)
+        //     return
+        // }
+        // if(status === "authenticated" || status === "guest") {
+        //     setOpen(false)
+        // }
+        switch(status) {
+            case "loading":
+                setOpen(false)
+                break
+            case "unauthenticated":
+                setOpen(true)
+                break
+            case "authenticated":
+            case "guest":
+                setOpen(false)
+                break
+        }
     }, [status])
 
     const handleGuestLogin = async (opts?: {
@@ -31,8 +50,6 @@ export default function SessionGate({
         await guestLogin(opts)
         await refresh()
     }
-
-    // if(status === "loading") return null
 
     if(open) {
         return (

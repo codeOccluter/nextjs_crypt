@@ -27,12 +27,20 @@ export default function ChartClient({ slug }: { slug: string }) {
         setStatus(null)
         setLoading(true)
 
-        axiosClient.get<ApiResponse>(`/api/graph/${slug}`)
+        axiosClient.get<ApiResponse>(`/api/graph/${slug}`, {
+            validateStatus: (status) => status < 500 // 4xx도 정상 응답으로 처리
+        })
             .then(result => {
                 if(!alive) return
 
-                setResponse(result.data)
-                setStatus(result.status)
+                // 404는 정상 응답으로 처리되므로 여기서 처리
+                if(result.status === 404) {
+                    setStatus(404)
+                    setResponse(null)
+                } else {
+                    setResponse(result.data)
+                    setStatus(result.status)
+                }
             })
             .catch(error => {
                 if(!alive) return

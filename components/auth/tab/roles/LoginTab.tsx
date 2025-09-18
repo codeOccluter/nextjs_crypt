@@ -19,11 +19,6 @@ export default function LoginTab() {
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="text-center">
-                <h3 className="text-lg font-semibold text-white mb-2">{t("login_modal.signin")}</h3>
-                <p className="text-white/70 text-sm">OAuth로 간편하게 로그인</p>
-            </div>
-
             <div className="grid grid-cols-1 gap-3">
                 {OAUTH_PROVIDERS.map((provider) => {
                     const Component = OAUTH_COMPONENTS[provider.key]

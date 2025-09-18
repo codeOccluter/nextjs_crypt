@@ -1,7 +1,7 @@
 import Header from "@/components/ui/layout/Header"
 import Footer from "@/components/ui/layout/Footer"
 import SessionGate from "@/components/auth/gate/SessionGate"
-import SessionProvider from "@/components/oauth-temp/SessionProvider";
+import SessionProvider from "@/components/providers/SessionProvider";
 
 export default async function MainLayout({
   children,
@@ -14,7 +14,8 @@ export default async function MainLayout({
       <div className="grid h-screen grid-rows-[auto_1fr_auto]">
           <Header />
               <main className="overflow-y-auto">
-                <SessionProvider>{children}</SessionProvider>
+                {/* <SessionProvider>{children}</SessionProvider> */}
+                {children}
               </main>
           <Footer />
       </div>

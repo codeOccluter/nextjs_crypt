@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useCallback } from "react"
 import LoginModal from "./LoginModal"
 import { RenderAdminTab, RenderGuestTab, RenderLoginTab } from "../tab/RenderTab"
 import { useTranslation } from "@/lib/i18n/i18n-client"
@@ -43,6 +43,10 @@ export default function AuthModal({ open, pending, onGuestLogin }: AuthModalProp
         }
     }
 
+    const handleGuestValidChange = useCallback((ok: boolean) => {
+        setValidities((s) => ({ ...s, guest: ok }))
+    }, [])
+
     return (
         <LoginModal 
             open={open} 
@@ -67,7 +71,7 @@ export default function AuthModal({ open, pending, onGuestLogin }: AuthModalProp
             {tab === "login" && <RenderLoginTab />}
             {tab === "guest" && <RenderGuestTab 
                 onGuestLogin={onGuestLogin}
-                onGuestValidChange={(ok) => setValidities((s) => ({ ...s, guest: ok }))}
+                onGuestValidChange={handleGuestValidChange}
             />}
             {tab === "admin" && <RenderAdminTab />}
         </LoginModal>

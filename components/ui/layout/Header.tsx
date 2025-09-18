@@ -64,9 +64,7 @@ export default function Header() {
     ]
 
     const algoLinks = [
-        { href: "/main/graph/new", label: t("header.link.graph") },
-        { href: "/encrypt/aes", label: t("header.link.ex1") },
-        { href: "/encrypt/rsa", label: t("header.link.ex2") }
+        { href: "/main/graph/new", label: t("header.link.graph") }
     ]
 
     useEffect(() => {
@@ -98,12 +96,13 @@ export default function Header() {
 
         const { t } = useTranslation()
 
+        console.log(`query: ${JSON.stringify(query)}`)
+
         if(status === "loading") return null
-        // if(status !== "guest" && status !== "authenticated")  return null
 
         let nickname: string | undefined = ""
         if(status === "guest") {
-            nickname = toGuestNickname(query.data?.user.guestId, query.data?.user.guestIdx)
+            nickname = toGuestNickname(query?.data?.user?.uniqueName, query.data?.user?.guestIdx)
         }
 
         const text = `${nickname}${t("header.welcome")}`

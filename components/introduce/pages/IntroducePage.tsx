@@ -1,11 +1,11 @@
 import { Metadata } from "next";
-import HeroSection from "./HeroSection";
-import ValueProps from "./ValueProps";
-import TechStack from "./TechStack";
-import Timeline from "./Timeline";
-import TeamShowcase from "./TeamShowcase";
-import FAQ from "./FAQ";
-import CTASection from "./CTASection";
+import HeroSection from "../ui/HeroSection";
+import ValueProps from "../ui/ValueProps";
+import TechStack from "../ui/TechStack";
+import Timeline from "../ui/Timeline";
+import TeamShowcase from "../ui/TeamShowcase";
+import FAQ from "../ui/FAQ";
+import CTASection from "../ui/CTASection";
 import {
     heroData,
     valuesData,

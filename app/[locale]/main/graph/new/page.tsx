@@ -1,4 +1,4 @@
-import NewGraphPage from "@/components/graph/new/NewGraphPage"
+import NewGraphPage from "@/components/graph/pages/NewGraphPage"
 
 export default function NewGraph({ params }: { params: { locale: "ko" | "en" } }) {
 

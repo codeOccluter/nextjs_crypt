@@ -1,7 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import Card from "../ui/common/card/Card"
+import Card from "../../ui/common/card/Card"
 import { mapRowsToCards } from "@/features/main/main.mapper"
 import axiosClient from "@/lib/axios/axiosClient"
 import { type GraphRow } from "@/features/graph/new/new.types"

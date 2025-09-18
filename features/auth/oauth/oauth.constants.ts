@@ -5,6 +5,28 @@ import NaverProvider from "next-auth/providers/naver"
 export type AuthStatus = "authenticated" | "unauthenticated" | "guest" | "loading"
 export type AuthTabKey = "login" | "guest" | "admin"
 export type OAuthProviderKey = "google" | "kakao" | "naver"
+export type guestStatus = "idle" | "valid" | "invalid" | "checking"
+
+export type UnifiedUser = {
+    guestId?: string | number
+    uniqueName?: string
+    email?: string
+    image?: string
+    role?: number
+    guestIdx?: number
+    provider?: string
+}
+
+export type QueryLike<T> = {
+    data: T | undefined
+    isLoading: boolean
+    refetch: () => Promise<void>
+}
+
+export type SessionData = {
+    user: UnifiedUser | null
+    status: AuthStatus
+}
 
 export type AuthValidities = {
     login?: boolean
