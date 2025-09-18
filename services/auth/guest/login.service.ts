@@ -7,7 +7,7 @@ export type LoginGuestOptions = {
 
 export async function loginGuest(opts?: LoginGuestOptions) {
 
-    const { data } = await axiosClient.post(`/api/auth/guest`, opts)
+    const { data } = await axiosClient.post(`/api/guest`, opts)
     if(typeof window !== "undefined" && data?.accessToken) {
         localStorage.setItem(`accessToken`, data.accessToken)
     }

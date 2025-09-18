@@ -9,14 +9,16 @@ const SESSION_KEY = [["me"], ["session"]] as const
 export default function useGuestLogout() {
     const queryClient = useQueryClient()
 
-    const invalidateSession = () => {
+    const resetSessionCache = () => {
+        try { queryClient.setQueryData(["session"], null) } catch {}
         for (const key of SESSION_KEY) queryClient.invalidateQueries({ queryKey: key })
+        queryClient.removeQueries({ queryKey: ["session"], exact: true })
     }
 
     const mutation = useMutation({
         mutationFn: () => logoutGuest(),
         onSuccess: () => {
-            invalidateSession()
+            resetSessionCache()
         },
         onError: (err) => {
             // console.error(`[logoutGuest() failed]: ${parseAxiosError(err)}`)

@@ -19,7 +19,7 @@ export default function useGuestLogin() {
             invalidateSession()
         },
         onError: (err) => {
-            // console.error(`[loginGuest() failed]: ${parseAxiosError(err)}`)
+            console.error(`[loginGuest() failed]: ${parseAxiosError(err)}`)
         },
         retry: 1 // 재시도 횟 수
     })

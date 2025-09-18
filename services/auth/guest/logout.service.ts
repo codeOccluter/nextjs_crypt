@@ -1,9 +1,8 @@
-import axiosClient from "@/lib/axios/axiosClient"
+import axiosClient, { clearAxiosAuth } from "@/lib/axios/axiosClient"
 
 export async function logoutGuest() {
 
-    await axiosClient.delete(`/api/auth/guest`)
-    if(typeof window !== "undefined") {
-        localStorage.removeItem("accessToken")
-    }
+    await axiosClient.delete(`/api/guest`)
+    // Ensure axios default Authorization header and storage are fully cleared
+    clearAxiosAuth()
 }
