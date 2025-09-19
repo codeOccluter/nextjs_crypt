@@ -18,7 +18,7 @@ const authOptions: NextAuthOptions = {
         async jwt({ token, account, profile }) {
             if(account?.provider && profile) {
                 try {
-                    const response = await axiosClient.post(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/auth/${account.provider}`, {
+                    const response = await axiosClient.post(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/oauth/${account.provider}`, {
                         providerId: profile.sub,
                         email: profile.email,
                         name: profile.name,
@@ -34,7 +34,7 @@ const authOptions: NextAuthOptions = {
                         token.accessToken = data.accessToken
                     }
                 }catch(error) {
-                    console.error(`${account.provider} Login API call failed: ${error}`)
+                    console.error(`${account.provider} Login API call failed:`, JSON.stringify(error))
                 }
             }
 
@@ -49,10 +49,10 @@ const authOptions: NextAuthOptions = {
             
             session.user = {
                 ...session.user,
-                id: token.userId as string,
-                name: token.name as string,
-                email: token.email as string,
-                image: token.picture as string,
+                googleId: token.userId as string,
+                googleName: token.name as string,
+                googleEmail: token.email as string,
+                googleImage: token.picture as string,
                 role: token.role as number,
                 provider: token.provider as string
             } as any

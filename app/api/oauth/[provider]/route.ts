@@ -62,10 +62,14 @@ export async function POST(
             }
         })
         if(user) {
+
+            console.log(`SERVER user ${user}`)
+
             user.email = email
             user.name = name
             user.image = image
             user.updated_at = new Date()
+            
             user = await authUserRepo.save(user)
         }else {
             user = authUserRepo.create({

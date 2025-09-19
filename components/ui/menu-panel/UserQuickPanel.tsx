@@ -47,7 +47,7 @@ export default function UserQuickPanel() {
     }
 
     return (
-        <>
+        <div className="shrink-0">
             <button
                 type="button"
                 aria-haspopup="dialog"
@@ -124,12 +124,10 @@ export default function UserQuickPanel() {
                                     </li>
                                 </ul>
                             </div>
-
                         </motion.aside>
-
                     </motion.div>
                 )}
             </AnimatePresence>
-        </>
+        </div>
     )
 } 

@@ -8,6 +8,12 @@ const nextConfig = {
     useLightningcss: false,
     serverComponentsExternalPackages: ['next-intl'],
   },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.externals.push('typeorm');
+    }
+    return config;
+  },
 };
 
 module.exports = nextConfig
