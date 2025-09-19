@@ -17,17 +17,6 @@ export default function SessionGate({
 
     useEffect(() => {
 
-        // if(status === "loading") {
-        //     setOpen(false)
-        //     return
-        // }
-        // if(status === "unauthenticated") {
-        //     setOpen(true)
-        //     return
-        // }
-        // if(status === "authenticated" || status === "guest") {
-        //     setOpen(false)
-        // }
         switch(status) {
             case "loading":
                 setOpen(false)

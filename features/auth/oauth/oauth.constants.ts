@@ -8,6 +8,8 @@ export type OAuthProviderKey = "google" | "kakao" | "naver"
 export type guestStatus = "idle" | "valid" | "invalid" | "checking"
 
 export type UnifiedUser = {
+    id?: string | number
+    name?: string
     guestId?: string | number
     uniqueName?: string
     email?: string
@@ -32,6 +34,25 @@ export type AuthValidities = {
     login?: boolean
     guest?: boolean
     admin?: boolean
+}
+
+export type AuthSessionUser = {
+    user: {
+        userId: string
+        role: number
+        name: string
+        image: string
+        provider: string
+    }
+}
+
+export type AuthModalProps = {
+    open: boolean
+    pending?: boolean
+    onGuestLogin?: (opts?: {
+        nickname?: string
+        ttlMs?: number
+    }) => Promise<void> | void
 }
 
 export const AUTH_TABS = [
@@ -70,25 +91,6 @@ export const OAUTH_PROVIDERS: {
         enabled: false
     }
 ]
-
-export type AuthSessionUser = {
-    user: {
-        userId: string
-        role: number
-        name: string
-        image: string
-        provider: string
-    }
-}
-
-export type AuthModalProps = {
-    open: boolean
-    pending?: boolean
-    onGuestLogin?: (opts?: {
-        nickname?: string
-        ttlMs?: number
-    }) => Promise<void> | void
-}
 
 export const ACTIVE_PROVIDERS = ['google', 'kakao', 'naver']
 export const SUPPORTED_PROVIDERS = {

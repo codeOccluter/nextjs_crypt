@@ -8,7 +8,7 @@ import {
 
 @Entity("users")
 export class User {
-    @PrimaryGeneratedColumn("uuid") 
+    @PrimaryGeneratedColumn() 
     idx!: number
 
     @Column({ type: "tinyint", default: 1 })
