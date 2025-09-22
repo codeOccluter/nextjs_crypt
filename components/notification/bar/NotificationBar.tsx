@@ -7,9 +7,12 @@ export default function NotificationBar() {
 
     const { notifications, removeNotification } = useNotificationStore()
 
+    // 그래프 활동 알림은 헤더에서 처리하므로 일반 알림만 표시
+    const generalNotifications = notifications.filter(n => n.type !== "graph_activity")
+
     return (
         <div className="absolute top-16 right-4 z-[100] flex flex-col gap-2 w-full max-w-sm">
-            {notifications.map((notification) => (
+            {generalNotifications.map((notification) => (
                 <div
                     key={notification.id}
                     className={clsx(

@@ -12,6 +12,7 @@ import clsx from "clsx"
 import UserQuickPanel from "../menu-panel/UserQuickPanel"
 import { useTranslation } from "@/lib/i18n/i18n-client"
 import useSessionQuery from "../../../hooks/auth/useSessionQuery"
+import { useDemoStore } from "@/stores/ui/demo.store"
 
 export default function Header() {
 
@@ -19,6 +20,7 @@ export default function Header() {
     const [open, setOpen] = useState(false)
     const panelRef = useRef<HTMLDivElement>(null)
     const { t } = useTranslation()
+    const { isDemoVisible, toggleDemo } = useDemoStore()
 
     useEffect(() => {
 
@@ -53,6 +55,20 @@ export default function Header() {
                     <HeaderNavbar />
                 </div>
                 <div className="ml-auto flex items-center gap-3 md:gap-6 min-w-0">
+                    {/* 데모 토글 버튼 */}
+                    <button
+                        onClick={toggleDemo}
+                        className={clsx(
+                            "px-2 py-1 text-xs font-medium rounded transition-colors",
+                            isDemoVisible 
+                                ? "bg-yellow-500 text-black hover:bg-yellow-400" 
+                                : "bg-white/10 text-white/80 hover:bg-white/20 hover:text-white"
+                        )}
+                        title={isDemoVisible ? "데모 숨기기" : "데모 보기"}
+                    >
+                        DEMO
+                    </button>
+                    
                     <HeaderLanguageSwitcherButton />
                     <div className="hidden md:block h-6 w-px bg-white/20 shrink-0" />
                    
