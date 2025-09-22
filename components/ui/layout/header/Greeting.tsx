@@ -6,14 +6,13 @@ import { toGuestNickname } from "@/features/auth/guest/guest.formatter"
 
 export function Greeting({ status, user }: { status: AuthStatus, user?: UnifiedUser | null }) {
     const { t } = useTranslation()
-    console.log(`user: ${JSON.stringify(user)}`)
-
+    // console.log(`user: ${JSON.stringify(user)}`)
     if(status === "loading") {
         return null
     }
-
+    
     const text = `${status === "guest" ? toGuestNickname(user?.uniqueName, user?.guestIdx) : user?.name || ""}${t("header.welcome")}`
-
+    
     return (
         <div className="min-w-0">
             <div className="hidden md:block max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">

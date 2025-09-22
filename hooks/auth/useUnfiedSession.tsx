@@ -36,8 +36,7 @@ export function useUnfiedSession() {
                 headers: { Authorization: `Bearer ${token}` }
             })
             if(data?.user) {
-
-                console.log(`useUnifiedSession - data: ${JSON.stringify(data)}`)
+                // console.log(`useUnifiedSession - data: ${JSON.stringify(data)}`)
                 setGuestUser({
                     guestId: data.user.guestId,
                     uniqueName: data.user.nickname ?? "Guest",

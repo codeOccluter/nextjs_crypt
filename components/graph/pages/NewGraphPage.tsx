@@ -4,6 +4,7 @@ import { GraphDefines } from "@/features/graph/new/new.constants"
 import { ensureClientDBReady, ClientSQL } from "@/server/model/client-db"
 import { Entities } from "@/server/model/client-db"
 import { getTranslations } from "@/lib/i18n/i18n-server"
+import NewGraphPageClient from "./NewGraphPageClient"
 
 function toTinyIntBool(v: FormDataEntryValue | null): number {
     if(typeof v !== "string") return 0
@@ -58,7 +59,9 @@ async function createGraph(formData: FormData) {
 
     const slug = (formData.get("slug") ?? "").toString().trim()
     const title = (formData.get("title") ?? "").toString().trim()
-    if(!slug || !title) redirect(`/graph/new?error=required`)
+    if(!slug || !title) {
+        return { success: false, error: "required" }
+    }
 
     const variant = normalization(
         formData.get("variant"),
@@ -109,14 +112,16 @@ async function createGraph(formData: FormData) {
             metadata
         })
     }catch(err: any) {
-        if(err?.code === "ER_DUP_ENTRY") redirect(`/graph/new?error=duplicate`)
+        if(err?.code === "ER_DUP_ENTRY") {
+            return { success: false, error: "duplicate" }
+        }
             
         console.log(err)
-        redirect(`/graph/new?error=unknown`)
+        return { success: false, error: "unknown" }
     }
 
     revalidatePath("/main")
-    redirect("/main")
+    return { success: true }
 }
 
 export default function NewGraphPage({ locale }: { locale: "ko" | "en" }) {
@@ -131,7 +136,7 @@ export default function NewGraphPage({ locale }: { locale: "ko" | "en" }) {
         <div className="max-w-3xl mx-auto px-4 py-8">
             <h1 className="text-2xl font-bold mb-6">{`${t("graphs.new.title")}`}</h1>
 
-            <form action={createGraph} className="space-y-6">
+            <NewGraphPageClient createGraphAction={createGraph}>
                 <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <label className="flex flex-col gap-1">
                         <span className="text-sm font-medium">Slug *</span>
@@ -224,13 +229,7 @@ export default function NewGraphPage({ locale }: { locale: "ko" | "en" }) {
                     </label>
                 </section>
 
-                <div className="flex items-center gap-3">
-                    <button type="submit" className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">
-                        {`${t("graphs.new.save")}`}
-                    </button>
-                    <a href="/main" className="text-sm text-gray-600 hover:underline">{`${t("graphs.new.cancel")}`}</a>
-                </div>
-            </form>
+            </NewGraphPageClient>
         </div>
     )
 }

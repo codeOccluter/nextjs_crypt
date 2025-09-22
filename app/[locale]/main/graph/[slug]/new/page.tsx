@@ -1,10 +1,11 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import axiosClient from "@/lib/axios/axiosClient"
 import { useRouter, useParams } from "next/navigation"
 import type { ChartApiResponse, ChartDefinition, ChartType } from "@/features/graph/Chart/chart.constant"
 import { normalizeType, chartUUID } from "@/features/graph/Chart/chart.utils"
+import { useGraphActivityNotification } from "@/features/notification/bar/bar.features"
 
 type Row = Record<string, string | number>
 
@@ -16,8 +17,10 @@ export default function NewGraphDataPage() {
         locale: string 
         slug: string
     }
+    const { notifyDataAdded } = useGraphActivityNotification()
     const [tab, setTab] = useState<"form" | "json">("form")
     const [title, setTitle] = useState(`샘플 그래프`)
+    const [graphInfo, setGraphInfo] = useState<{title: string; slug: string} | null>(null)
     const [typeLabel, setTypeLabel] = useState<ChartType>("Bar")
     const [xKey, setXKey] = useState("label")
     const [yKey, setYKey] = useState("value")
@@ -65,6 +68,22 @@ export default function NewGraphDataPage() {
     const [jsonText, setJosnText] = useState<string>(exampleJson)
     const [saving, setSaving] = useState(false)
 
+    // 그래프 정보 가져오기
+    useEffect(() => {
+        const fetchGraphInfo = async () => {
+            try {
+                const response = await axiosClient.get(`/api/graph/${slug}/info`)
+                setGraphInfo(response.data)
+            } catch (error) {
+                console.error("Failed to fetch graph info:", error)
+                // 실패 시 slug를 제목으로 사용
+                setGraphInfo({ title: slug, slug })
+            }
+        }
+        
+        fetchGraphInfo()
+    }, [slug])
+
     const saveFromForm = async () => {
         try {
             setSaving(true)
@@ -78,6 +97,11 @@ export default function NewGraphDataPage() {
             }
 
             await axiosClient.post(`/api/graph/${slug}`, payload)
+            
+            // 성공 시 알림 트리거 (실제 그래프 제목 사용)
+            const graphTitle = graphInfo?.title || slug
+            notifyDataAdded(graphTitle)
+            
             router.replace(`/main/graph/${slug}`)
             router.refresh()
         }catch(err: any) {
@@ -102,6 +126,11 @@ export default function NewGraphDataPage() {
             }
 
             await axiosClient.post(`/api/graph/${slug}`, payload)
+            
+            // 성공 시 알림 트리거 (실제 그래프 제목 사용)
+            const graphTitle = graphInfo?.title || slug
+            notifyDataAdded(graphTitle)
+            
             router.replace(`/main/graph/${slug}`)
             router.refresh()
         }catch(err: any) {
@@ -114,7 +143,9 @@ export default function NewGraphDataPage() {
 
     return (
         <div className="mx-auto max-w-3xl px-4 py-6">
-            <h1 className="text-2xl font-bold mb-4">데이터 추가</h1>
+            <h1 className="text-2xl font-bold mb-4">
+                {graphInfo ? `${graphInfo.title} - 데이터 추가` : "데이터 추가"}
+            </h1>
             
             <div className="mb-4 flex- gap-2">
                 <button

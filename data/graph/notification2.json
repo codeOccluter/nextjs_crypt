@@ -1,7 +1,7 @@
 {
   "def": {
     "id": "tmp-preview",
-    "slug": "kihoon",
+    "slug": "notification2",
     "type": "Bar",
     "fieldMap": {
       "x": "label",
