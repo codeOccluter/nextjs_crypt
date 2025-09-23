@@ -1,6 +1,6 @@
 {
     "header": {
-        "logo": "Data Labs",
+        "logo": "Quantum Leap",
         "home": "홈",
         "introduce": "소개",
         "document": "문서",
@@ -13,7 +13,7 @@
         }
     },
     "footer": {
-        "logo": "Data Labs",
+        "logo": "Quantum Leap",
         "title": "데이터 연구소",
         "footer_nav": {
             "home": "홈",

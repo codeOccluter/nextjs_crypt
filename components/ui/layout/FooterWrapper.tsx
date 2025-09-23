@@ -1,36 +1,48 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import Footer from "./Footer"
 
 export default function FooterWrapper() {
 
     const [visible, setVisible] = useState(true)
+    const ticking = useRef(false)
 
     useEffect(() => {
 
-        const handleScroll = () => {
+        const onScroll = () => {
+            if (ticking.current) return
+            ticking.current = true
+            requestAnimationFrame(() => {
+                const scrollTop = window.scrollY
+                const windowHeight = window.innerHeight
+                const fullHeight = document.body.scrollHeight
 
-            const scrollTop = window.scrollY
-            const windowHeight = window.innerHeight
-            const fullHeight = document.body.scrollHeight
-
-            if(scrollTop === 0 || scrollTop + windowHeight >= fullHeight) {
-                setVisible(true)
-            }else {
-                setVisible(false)
-            }
+                if (scrollTop < 8 || scrollTop + windowHeight > fullHeight - 8) {
+                    setVisible(true)
+                } else {
+                    setVisible(false)
+                }
+                ticking.current = false
+            })
         }
 
-        window.addEventListener("scroll", handleScroll)
-        return () => window.removeEventListener("scroll", handleScroll)
+        window.addEventListener("scroll", onScroll, { passive: true })
+        return () => window.removeEventListener("scroll", onScroll)
     }, [])
 
     return (
         <div
-            className={`fixed bottom-0 left-0 w-full transition-transform duration-300 ${visible ? "translate-y-0" : "translate-y-full"}`}
+            className={[
+                "fixed bottom-0 left-0 w-full z-40",
+                "transition-transform duration-300 ease-out",
+                visible ? "translate-y-0" : "translate-y-full",
+                "pointer-events-none"
+            ].join(" ")}
         >
-            <Footer />
+            <div className="pointer-events-auto">
+                <Footer />
+            </div>
         </div>
     )
 }
