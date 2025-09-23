@@ -13,6 +13,7 @@ import UserQuickPanel from "../menu-panel/UserQuickPanel"
 import { useTranslation } from "@/lib/i18n/i18n-client"
 import useSessionQuery from "../../../hooks/auth/useSessionQuery"
 import { useDemoStore } from "@/stores/ui/demo.store"
+import WebSocketStatus from "@/components/websocket/WebSocketStatus"
 
 export default function Header() {
 
@@ -55,6 +56,11 @@ export default function Header() {
                     <HeaderNavbar />
                 </div>
                 <div className="ml-auto flex items-center gap-3 md:gap-6 min-w-0">
+                    {/* WebSocket 연결 상태 */}
+                    <div className="hidden sm:block">
+                        <WebSocketStatus />
+                    </div>
+                    
                     {/* 데모 토글 버튼 */}
                     <button
                         onClick={toggleDemo}
