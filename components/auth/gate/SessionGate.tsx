@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import AuthModal from "../modal/AuthModal"
-import { useUnfiedSession } from "@/hooks/auth/useUnfiedSession"
+import { useUnifiedSession } from "@/hooks/auth/useUnfiedSession"
 import useGuestLogin from "@/hooks/auth/useGuestLogin"
 
 type Props = { children: React.ReactNode }
@@ -11,7 +11,7 @@ export default function SessionGate({
     children
 }: Props) {
 
-    const { status, refresh } = useUnfiedSession()
+    const { status, refresh } = useUnifiedSession()
     const { guestLogin, pending } = useGuestLogin()
     const [open, setOpen] = useState(false)
 

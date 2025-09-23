@@ -2,6 +2,8 @@
 // 필수: Server Components, <html>,<body> 태그는 여기만 있어야 함
 import "./globals.css"
 import Providers from "./provider";
+import WebSocketDebugger from "@/components/websocket/WebSocketDebugger";
+import ChatSystem from "@/components/chat/ChatSystem";
 
 export default function RootLayout({
   children,
@@ -12,7 +14,9 @@ export default function RootLayout({
     <html lang="ko">
       <body>
           <Providers>
-            {children}  
+            {children}
+            {/* <WebSocketDebugger /> */}
+            <ChatSystem />
           </Providers>
       </body>
   </html>

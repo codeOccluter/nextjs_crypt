@@ -7,7 +7,7 @@ import type { AuthStatus, guestStatus, UnifiedUser } from "@/features/auth/oauth
 
 type UnifiedStatus = AuthStatus
 
-export function useUnfiedSession() {
+export function useUnifiedSession() {
 
     const { status: authStatus, data: authData } = useSession()
 
