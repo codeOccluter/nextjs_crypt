@@ -1,6 +1,6 @@
 {
     "header": {
-        "logo": "Data Labs",
+        "logo": "Quantum Leap",
         "home": "Home",
         "introduce": "Introduce",
         "document": "Docs",
@@ -13,7 +13,7 @@
         }
     },
     "footer": {
-        "logo": "Data Labs",
+        "logo": "Quantum Leap",
         "title": "The Data Lab",
         "footer_nav": {
             "home": "Home",

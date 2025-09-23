@@ -22,6 +22,14 @@
     {
       "label": "B",
       "value": 20
+    },
+    {
+      "label": "0C",
+      "value": 24
+    },
+    {
+      "label": "D",
+      "value": 36
     }
   ]
 }

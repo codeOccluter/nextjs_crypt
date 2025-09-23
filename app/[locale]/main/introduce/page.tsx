@@ -1,4 +1,4 @@
-import IntroducePage from "@/components/mainpage/introduce/IntroducePage"
+import IntroducePage from "@/components/introduce/pages/IntroducePage"
 
 export default function Introduce() {
     return (
